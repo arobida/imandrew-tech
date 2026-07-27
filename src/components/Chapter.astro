@@ -1,0 +1,347 @@
+---
+import type { Chapter } from '../data/episode';
+interface Props { chapter: Chapter }
+const { chapter } = Astro.props;
+---
+<section class="chapter" id={chapter.id} data-index={chapter.index}>
+  <span class="ch-watermark" aria-hidden="true">{chapter.index}</span>
+  <div class="ch-head">
+    <p class="mono ch-tag rv">
+      &#9619; CHAPTER {chapter.index} &mdash; {chapter.timecode}
+    </p>
+    <h2 class="split" data-split set:html={chapter.title.replace(' — ', '<br /><span class="lime">') + '</span>'} />
+    <blockquote class="ch-lead rv">
+      {chapter.leadIn}
+    </blockquote>
+    <p class="mono cue rv">&#9619; ASK HIM YOURSELF &mdash; PICK A PROMPT</p>
+  </div>
+
+  <ol class="rundown">
+    {chapter.questions.map((q, qi) => (
+      <li class="q-item rv" data-offset={String(qi % 3)}>
+        <button
+          class="q-card"
+          data-qid={q.id}
+          data-cursor="ASK"
+          aria-expanded="false"
+          aria-controls={`${q.id}-panel`}
+        >
+          <span class="q-num mono" aria-hidden="true">{chapter.index}.{qi + 1}</span>
+          <span class="q-text">
+            <span class="q-kind mono">{q.kind}</span>
+            {q.q}
+          </span>
+          <span class="q-state mono" aria-hidden="true">
+            <span class="state-ask">+ ASK</span>
+            <span class="state-done">&#10003; ANSWERED</span>
+          </span>
+        </button>
+
+        <div class="q-panel" id={`${q.id}-panel`} hidden>
+          <div class="mic mono"><span class="mic-mark">A/</span> ANDREW ANSWERS</div>
+          {q.a.map((p) => <p class="a-para">{p}</p>)}
+          {q.stats && (
+            <ul class="a-stats mono">
+              {q.stats.map((s) => <li>{s}</li>)}
+            </ul>
+          )}
+          {q.followUps && (
+            <div class="followups">
+              <p class="mono fu-tag">&#9619; DIG DEEPER</p>
+              {q.followUps.map((fu, fui) => (
+                <div class="fu">
+                  <button class="fu-btn mono" data-fu={`${q.id}-fu${fui}`}>
+                    &gt; {fu.q}
+                  </button>
+                  <div class="fu-panel" id={`${q.id}-fu${fui}`} hidden>
+                    <p class="a-para">{fu.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <div class="takeaway rv">
+    <span class="mono tw-label">THE POINT &mdash; {chapter.index}</span>
+    <p>{chapter.takeaway}</p>
+  </div>
+</section>
+
+<style>
+  .chapter {
+    position: relative;
+    padding: 7rem 1.5rem 5rem;
+    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    overflow: hidden;
+  }
+  .chapter:nth-of-type(even) { background: var(--olive-deep); }
+  .ch-watermark {
+    position: absolute;
+    top: 1.5rem;
+    right: -1rem;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(14rem, 30vw, 26rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px color-mix(in srgb, var(--sage) 22%, transparent);
+    pointer-events: none;
+    user-select: none;
+  }
+  .ch-head {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto 3.5rem;
+  }
+  .ch-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 1.2rem; }
+  .ch-head h2 { font-size: clamp(2.4rem, 6vw, 5rem); margin-bottom: 1.8rem; }
+  .ch-lead {
+    max-width: 640px;
+    color: var(--sage);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    border-left: 2px solid var(--lime);
+    padding-left: 1.4rem;
+    margin-bottom: 2rem;
+  }
+  .cue { color: var(--sage); font-size: 0.72rem; letter-spacing: 0.12em; }
+
+  .rundown {
+    position: relative;
+    list-style: none;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .q-card {
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    text-align: left;
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
+    padding: 1.4rem 1.6rem;
+    cursor: pointer;
+    font-family: var(--body);
+    font-size: 1rem;
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+  /* diagonal wipe fill on hover */
+  .q-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--lime);
+    opacity: 0.07;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    transition: clip-path 0.35s var(--ease-pop);
+    pointer-events: none;
+  }
+  .q-card:hover::before { clip-path: polygon(0 0%, 100% -12%, 100% 100%, 0 100%); }
+  .q-card:hover { border-color: var(--lime); }
+
+  .q-num {
+    color: transparent;
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--sage) 70%, transparent);
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.1;
+    transition: color 0.25s, -webkit-text-stroke-color 0.25s;
+  }
+  .q-card:hover .q-num, .q-item.asked .q-num {
+    color: var(--lime);
+    -webkit-text-stroke-color: var(--lime);
+  }
+  .q-kind {
+    display: inline-block;
+    color: var(--ink); background: var(--sage);
+    font-size: 0.58rem; font-weight: 600; letter-spacing: 0.12em;
+    padding: 0.15rem 0.5rem;
+    margin-bottom: 0.45rem;
+  }
+  .q-text { line-height: 1.55; display: block; }
+  .q-state { font-size: 0.7rem; letter-spacing: 0.08em; white-space: nowrap; padding-top: 0.2rem; }
+  .state-ask { color: var(--lime); }
+  .state-done { color: var(--sage); display: none; }
+  .q-item.asked .q-card { border-color: color-mix(in srgb, var(--lime) 60%, transparent); }
+  .q-item.asked .state-ask { display: none; }
+  .q-item.asked .state-done { display: inline; color: var(--lime); }
+
+  .q-panel {
+    border: 1px solid color-mix(in srgb, var(--lime) 45%, transparent);
+    border-top: none;
+    background: var(--ink);
+    padding: 1.8rem 1.6rem 1.6rem;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transition: clip-path 0.45s var(--ease-pop);
+  }
+  .q-panel.play { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+  .mic {
+    display: flex; align-items: center; gap: 0.6rem;
+    color: var(--lime); font-size: 0.68rem; letter-spacing: 0.14em;
+    margin-bottom: 1.2rem;
+  }
+  .mic-mark {
+    font-weight: 600;
+    background: var(--lime);
+    color: var(--ink);
+    padding: 0.15rem 0.4rem;
+  }
+  .a-para {
+    color: var(--paper);
+    max-width: 68ch;
+    margin-bottom: 1.1rem;
+    line-height: 1.75;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s var(--ease-pop), transform 0.5s var(--ease-pop);
+  }
+  .q-panel.play .a-para, .fu-panel.play .a-para { opacity: 1; transform: none; }
+  .q-panel.play .a-para:nth-of-type(2) { transition-delay: 0.3s; }
+  .a-stats {
+    list-style: none;
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    margin: 0.4rem 0 0.8rem;
+  }
+  .a-stats li {
+    color: var(--ink); background: var(--lime);
+    font-size: 0.66rem; font-weight: 600; letter-spacing: 0.08em;
+    padding: 0.35rem 0.7rem;
+  }
+  .followups { margin-top: 1.4rem; border-top: 1px dashed color-mix(in srgb, var(--sage) 40%, transparent); padding-top: 1.2rem; }
+  .fu-tag { color: var(--sage); font-size: 0.66rem; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
+  .fu { margin-bottom: 0.7rem; }
+  .fu-btn {
+    background: none;
+    border: 1px solid color-mix(in srgb, var(--sage) 45%, transparent);
+    color: var(--sage);
+    font-size: 0.78rem;
+    text-align: left;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    width: 100%;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    line-height: 1.5;
+  }
+  .fu-btn:hover { color: var(--lime); border-color: var(--lime); background: color-mix(in srgb, var(--lime) 5%, transparent); }
+  .fu-panel { padding: 1rem 0.4rem 0.2rem; }
+  .fu-panel .a-para { color: var(--sage); font-size: 0.95rem; }
+
+  .takeaway {
+    max-width: 1100px;
+    margin: 4.5rem auto 0;
+    background: var(--lime);
+    color: var(--ink);
+    padding: 2.2rem 2.4rem;
+  }
+  .takeaway.rv { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
+  .takeaway.rv.in { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transition: opacity 0.65s var(--ease-pop), transform 0.65s var(--ease-pop), filter 0.65s var(--ease-pop), clip-path 0.7s var(--ease-pop) 0.1s; }
+  .tw-label { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em; display: block; margin-bottom: 0.8rem; }
+  .takeaway p {
+    font-family: var(--display);
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: clamp(1.3rem, 3vw, 2.1rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 760px) {
+    .ch-watermark { font-size: 12rem; top: 0.5rem; right: -2rem; }
+    .q-card { grid-template-columns: 1fr; gap: 0.8rem; }
+    .q-num { font-size: 1.1rem; }
+    .q-state { justify-self: start; }
+  }
+</style>
+
+<script>
+  const asked = new Set<string>();
+  const totalQ = 11;
+  const countEl = document.getElementById('asked-count');
+  const fillEl = document.getElementById('ep-progress');
+  const bump = (id: string) => {
+    if (asked.has(id)) return;
+    asked.add(id);
+    if (countEl) countEl.textContent = String(asked.size).padStart(2, '0');
+    if (fillEl) fillEl.style.width = `${(asked.size / totalQ) * 100}%`;
+    if (asked.size === totalQ) {
+      document.dispatchEvent(new CustomEvent('episode-complete'));
+    }
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('.q-card').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.qid!;
+      const panel = document.getElementById(`${id}-panel`)!;
+      const item = btn.closest('.q-item')!;
+      const opening = panel.hidden;
+      panel.hidden = !opening;
+      btn.setAttribute('aria-expanded', String(opening));
+      if (opening) {
+        item.classList.add('asked');
+        bump(id);
+        requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('play')));
+      }
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('.fu-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panel = document.getElementById(btn.dataset.fu!)!;
+      const opening = panel.hidden;
+      panel.hidden = !opening;
+      if (opening) requestAnimationFrame(() => panel.classList.add('play'));
+    });
+  });
+
+  // glass cursor label — lerped follow, shows on [data-cursor] hover
+  if (window.matchMedia('(pointer: fine)').matches && !document.getElementById('cursor-label')) {
+    const el = document.createElement('div');
+    el.id = 'cursor-label';
+    el.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(el);
+    const style = document.createElement('style');
+    style.textContent = `
+      #cursor-label {
+        position: fixed; top: 0; left: 0; z-index: 200;
+        padding: 0.45rem 0.8rem;
+        font-family: var(--mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
+        color: var(--ink); background: color-mix(in srgb, var(--lime) 85%, transparent);
+        backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+        border-radius: 999px;
+        pointer-events: none;
+        opacity: 0; transform: translate(-50%, -50%) scale(0.8);
+        transition: opacity 0.2s var(--ease-pop), transform 0.2s var(--ease-pop);
+        white-space: nowrap;
+      }
+      #cursor-label.on { opacity: 1; transform: translate(-50%, -130%) scale(1); }
+    `;
+    document.head.appendChild(style);
+
+    let tx = 0, ty = 0, x = 0, y = 0;
+    window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
+    const loop = () => {
+      x += (tx - x) * 0.18;
+      y += (ty - y) * 0.18;
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+      requestAnimationFrame(loop);
+    };
+    loop();
+    document.querySelectorAll<HTMLElement>('[data-cursor]').forEach((t) => {
+      t.addEventListener('mouseenter', () => { el.textContent = `${t.dataset.cursor} →`; el.classList.add('on'); });
+      t.addEventListener('mouseleave', () => { el.classList.remove('on'); });
+    });
+  }
+</script>
