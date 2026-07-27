@@ -1,0 +1,90 @@
+---
+const total = 11;
+---
+<header class="site-head" id="site-head">
+  <a href="#top" class="brand mono">
+    <span class="brand-mark"></span>
+    <span>ANDREW ROBIDA</span>
+  </a>
+  <nav class="head-nav mono">
+    <a href="#journey">&gt; STORY<sup>1</sup></a>
+    <a href="#chapters">&gt; ASK<sup>2</sup></a>
+    <a href="#arsenal">&gt; WORK<sup>3</sup></a>
+    <a href="#signoff">&gt; CONNECT<sup>4</sup></a>
+  </nav>
+  <div class="progress-wrap mono" title="Prompts explored">
+    <span class="progress-label">EXPLORED</span>
+    <div class="progress-track"><div class="progress-fill" id="ep-progress"></div></div>
+    <span class="progress-count"><span id="asked-count">00</span>/{total}</span>
+  </div>
+</header>
+
+<style>
+  .site-head {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0.85rem 1.5rem;
+    background: color-mix(in srgb, var(--olive-deep) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    transition: transform 0.45s var(--ease-pop);
+  }
+  .site-head.hidden-head { transform: translateY(-100%); }
+  .brand {
+    display: flex; align-items: center; gap: 0.6rem;
+    color: var(--paper); text-decoration: none;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em;
+  }
+  .brand-mark {
+    width: 12px; height: 12px;
+    background: var(--lime);
+    clip-path: polygon(0 0, 100% 0, 100% 65%, 65% 100%, 0 100%);
+  }
+  .head-nav { display: flex; gap: 1.4rem; margin-left: auto; }
+  .head-nav a {
+    color: var(--sage); text-decoration: none;
+    font-size: 0.72rem; letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+  .head-nav sup { font-size: 0.5rem; color: var(--lime); margin-left: 1px; }
+  .head-nav a:hover { color: var(--lime); }
+  .progress-wrap {
+    display: flex; align-items: center; gap: 0.6rem;
+    border-left: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    padding-left: 1.5rem;
+  }
+  .progress-label { font-size: 0.6rem; color: var(--sage); letter-spacing: 0.1em; }
+  .progress-track {
+    width: 72px; height: 5px;
+    background: color-mix(in srgb, var(--sage) 25%, transparent);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%;
+    background: var(--lime);
+    transition: width 0.5s var(--ease-pop);
+  }
+  .progress-count { font-size: 0.7rem; color: var(--lime); min-width: 4.2ch; }
+  @media (max-width: 760px) {
+    .head-nav { display: none; }
+    .progress-wrap { margin-left: auto; }
+  }
+</style>
+
+<script>
+  const head = document.getElementById('site-head');
+  let lastY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (head) {
+      if (y > lastY && y > 300) head.classList.add('hidden-head');
+      else head.classList.remove('hidden-head');
+    }
+    lastY = y;
+  }, { passive: true });
+</script>
