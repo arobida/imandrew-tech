@@ -1,0 +1,131 @@
+---
+import { links } from '../data/episode';
+---
+<section class="signoff" id="signoff">
+  <div class="so-inner">
+    <p class="mono so-tag rv">&#9619; THE SHORT VERSION</p>
+
+    <div class="recap rv">
+      <div class="recap-row">
+        <span class="mono recap-num">01</span>
+        <p><strong>The foundation.</strong> Twelve years of Marine Corps logistics and recruiting weren&rsquo;t a detour from engineering &mdash; they were the training set.</p>
+      </div>
+      <div class="recap-row">
+        <span class="mono recap-num">02</span>
+        <p><strong>The build years.</strong> Startup, freelance, and serverless-at-scale each teach a different layer &mdash; shipping, scoping, and discipline &mdash; and doing all three in public compounds.</p>
+      </div>
+      <div class="recap-row">
+        <span class="mono recap-num">03</span>
+        <p><strong>The mission.</strong> AI doesn&rsquo;t need more engagement machines. It needs local-first tools that hand real capability to people who can&rsquo;t code &mdash; software that&rsquo;s helpful, not addictive.</p>
+      </div>
+    </div>
+
+    <h2 class="so-line split" data-split>
+      KEEP BUILDING, WHATEVER<br />YOUR <span class="lime">STARTING LINE</span> LOOKED LIKE.
+    </h2>
+
+    <div class="complete-note mono" id="complete-note" hidden>
+      &#9619; FULL STORY UNCOVERED &mdash; 11/11 ANSWERED. NICELY DONE.
+    </div>
+
+    <nav class="so-links mono rv">
+      {links.map((l) => (
+        <a href={l.url} target="_blank" rel="noopener">
+          <span class="so-label">&gt; {l.label}</span>
+          <span class="so-note">{l.note}</span>
+        </a>
+      ))}
+    </nav>
+
+    <footer class="so-foot mono">
+      <span>FROM CRAYONS TO CODE</span>
+      <span>&copy; ANDREW ROBIDA &mdash; HELPFUL, NOT ADDICTIVE</span>
+    </footer>
+  </div>
+</section>
+
+<style>
+  .signoff {
+    background: var(--olive);
+    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    padding: 7rem 1.5rem 3rem;
+  }
+  .so-inner { max-width: 1100px; margin: 0 auto; }
+  .so-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 3rem; }
+
+  .recap { display: flex; flex-direction: column; gap: 0; margin-bottom: 5rem; border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent); }
+  .recap-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    align-items: baseline;
+  }
+  .recap-num { color: var(--lime); font-size: 0.85rem; font-weight: 600; }
+  .recap-row p { color: var(--sage); max-width: 70ch; line-height: 1.7; }
+  .recap-row strong { color: var(--paper); font-weight: 600; }
+
+  .so-line {
+    font-size: clamp(2.2rem, 6.5vw, 5.2rem);
+    margin-bottom: 3rem;
+  }
+
+  .complete-note[hidden] { display: none; }
+  .complete-note {
+    color: var(--ink);
+    background: var(--lime);
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  .so-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
+    margin-bottom: 5rem;
+  }
+  .so-links a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1.3rem 1.5rem;
+    text-decoration: none;
+    border: 0 solid color-mix(in srgb, var(--sage) 25%, transparent);
+    transition: background 0.2s;
+  }
+  .so-links a:nth-child(odd) { border-right-width: 1px; }
+  .so-links a:nth-child(-n+2) { border-bottom-width: 1px; }
+  .so-links a:hover { background: color-mix(in srgb, var(--lime) 8%, transparent); }
+  .so-label { color: var(--lime); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; }
+  .so-note { color: var(--sage); font-size: 0.68rem; letter-spacing: 0.05em; }
+
+  .so-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    color: var(--sage);
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    padding-top: 1.5rem;
+  }
+  @media (max-width: 760px) {
+    .recap-row { grid-template-columns: 44px 1fr; gap: 1rem; }
+    .so-links { grid-template-columns: 1fr; }
+    .so-links a:nth-child(odd) { border-right-width: 0; }
+    .so-links a:nth-child(-n+3) { border-bottom-width: 1px; }
+  }
+</style>
+
+<script>
+  document.addEventListener('episode-complete', () => {
+    const note = document.getElementById('complete-note');
+    if (note) note.hidden = false;
+  });
+</script>

@@ -1,0 +1,177 @@
+---
+---
+<section class="hero" id="top">
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+
+  <div class="hero-inner">
+    <p class="kicker mono rv">
+      <span class="rec"></span> PRODUCT ENGINEER &mdash; MARINE CORPS VETERAN &mdash; INDEPENDENT AI TOOL BUILDER
+    </p>
+
+    <h1 class="hero-title split" data-split>
+      <span class="line">FROM CRAYONS</span>
+      <span class="line lime">TO CODE<span class="cursor blink">_</span></span>
+    </h1>
+
+    <p class="hero-hook rv">
+      Marine Corps logistics, Navy recruiting pipelines, and on-device AI have one thing in common:
+      Andrew Robida &mdash; twelve years spent translating complexity into systems people can actually use,
+      without a single computer science class.
+    </p>
+
+    <!-- departure-board dossier -->
+    <div class="board mono rv" role="table" aria-label="Dossier">
+      <div class="board-row board-head">
+        <span>DOSSIER</span><span>A. ROBIDA // EST. 1986</span>
+      </div>
+      <div class="board-row"><span>ROLE</span><span>PRODUCT ENGINEER &amp; SYSTEMS ARCHITECT</span></div>
+      <div class="board-row"><span>SERVICE</span><span>US MARINE CORPS &mdash; 12 YRS &mdash; LOGISTICS</span></div>
+      <div class="board-row"><span>STATUS</span><span class="lime">INDEPENDENT &mdash; AI / LOCAL-FIRST TOOLS</span></div>
+      <div class="board-row"><span>BANNER</span><span>&ldquo;HELPFUL, NOT ADDICTIVE&rdquo;</span></div>
+      <div class="board-row"><span>ROUTE</span><span>PARADE DECK &rarr; DEPLOYMENT PIPELINE</span></div>
+    </div>
+
+    <div class="host-brief rv">
+      <p class="mono brief-tag">&#9619; HOW THIS SITE WORKS</p>
+      <p>
+        This is an interview you conduct yourself. Below are <strong>eleven prompts</strong> &mdash;
+        the ones you&rsquo;d ask if you sat down with him. Pick any, in any order,
+        and Andrew answers in his own words.
+      </p>
+      <a href="#journey" class="cta mono">
+        START WITH THE STORY <span class="cta-arrow">&darr;</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-ticker mono" aria-hidden="true">
+    <div class="ticker-track">
+      {Array(2).fill(0).map(() => (
+        <span>
+          USMC LOGISTICS &nbsp;&#9642;&nbsp; 60 CONTRACTS / $3M &nbsp;&#9642;&nbsp; GITHUB EST. 2016 &nbsp;&#9642;&nbsp; 200K+ SUBSCRIBER MIGRATION &nbsp;&#9642;&nbsp; 30+ DOMAINS SERVERLESS &nbsp;&#9642;&nbsp; LLMATE &nbsp;&#9642;&nbsp; SWIFT-PASS &nbsp;&#9642;&nbsp; DATA-SMITH &nbsp;&#9642;&nbsp; HELPFUL NOT ADDICTIVE &nbsp;&#9642;&nbsp;
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 7rem 1.5rem 0;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--sage) 9%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--sage) 9%, transparent) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent 75%);
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .kicker {
+    display: flex; align-items: center; gap: 0.7rem;
+    color: var(--sage); font-size: 0.72rem; letter-spacing: 0.12em;
+    margin-bottom: 2rem;
+  }
+  .rec {
+    width: 9px; height: 9px;
+    background: var(--lime);
+    animation: recpulse 1.6s ease-in-out infinite;
+  }
+  @keyframes recpulse { 50% { opacity: 0.25; } }
+
+  .hero-title {
+    font-size: clamp(3.4rem, 11.5vw, 9.5rem);
+    margin-bottom: 2.2rem;
+  }
+  .hero-title .line { display: block; }
+  .hero-title .lime { color: var(--lime); }
+  .cursor { font-weight: 400; }
+
+  .hero-hook {
+    max-width: 620px;
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: var(--sage);
+    line-height: 1.65;
+    margin-bottom: 3rem;
+  }
+
+  .board {
+    max-width: 720px;
+    border: 1px solid color-mix(in srgb, var(--sage) 40%, transparent);
+    margin-bottom: 3rem;
+    font-size: clamp(0.68rem, 1.4vw, 0.8rem);
+  }
+  .board-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    border-bottom: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    transition: background 0.2s;
+  }
+  .board-row:not(.board-head):hover { background: color-mix(in srgb, var(--lime) 4%, transparent); }
+  .board-row:last-child { border-bottom: none; }
+  .board-row span {
+    padding: 0.65rem 1rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .board-row span:first-child {
+    color: var(--sage);
+    border-right: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+  }
+  .board-head { background: var(--lime); }
+  .board-head span { color: var(--ink) !important; font-weight: 600; border-color: var(--ink) !important; }
+
+  .host-brief {
+    max-width: 560px;
+    padding-bottom: 5rem;
+  }
+  .brief-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
+  .host-brief p { color: var(--paper); margin-bottom: 1.6rem; }
+  .host-brief strong { color: var(--lime); font-weight: 600; }
+  .cta {
+    position: relative;
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    background: var(--lime); color: var(--ink);
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.3s var(--ease-pop);
+  }
+  .cta:hover { transform: translateY(-3px); }
+  .cta-arrow { transition: transform 0.3s var(--ease-pop); }
+  .cta:hover .cta-arrow { transform: translateY(3px); }
+
+  .hero-ticker {
+    position: relative;
+    border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    padding: 0.9rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--sage);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+  .ticker-track { display: inline-flex; animation: ticker 40s linear infinite; }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+    .rec { animation: none; }
+  }
+</style>
