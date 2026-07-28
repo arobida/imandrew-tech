@@ -59,7 +59,7 @@ export const chapters: Chapter[] = [
         id: 'c1q2',
         timecode: '04:30',
         kind: 'KES',
-        q: 'After the Corps you spent three years as a technical recruiter at KES, supporting Navy combat and communications systems, and you basically digitized a paper process from the inside. What did that teach you about how broken most workflows actually are?',
+        q: 'After the Corps you spent three years as a technical recruiter at KES, supporting Navy combat and communications systems, and you digitized a paper process from the inside. What did that teach you about how broken most workflows actually are?',
         a: [
           'Most offices don\u2019t run on software. They run on paper, tribal knowledge, and one person who \u201cknows how it works.\u201d At KES I watched compliance paperwork move by hand between desks, so I started automating it from the inside. That work cut vendor spend by 15%, but the bigger lesson was the leverage: a few scripts beat a whole layer of manual process.',
           'And there was a strange symmetry to it: I was sourcing engineers for Navy systems while teaching myself to become one at night. Recruiting made me the translator between technical and non-technical people. Everything I build now is still that same translation job.',
@@ -101,7 +101,7 @@ export const chapters: Chapter[] = [
     timecode: '2017-2024',
     titleLines: ['Building in Public', 'Startup, Freelance, Serverless at Scale'],
     leadIn:
-      'From 2017 to 2024 Andrew moved through three very different arenas: a peer-to-peer rental startup, a decade of freelance client work, and a product engineering role building serverless infrastructure at serious scale. Each one upgraded a different part of the toolkit.',
+      'From 2017 to 2024 Andrew moved through three very different arenas: a peer-to-peer rental startup, a freelance practice running alongside it all, and a product engineering role building serverless infrastructure at serious scale. Each one upgraded its own part of the toolkit.',
     takeaway: 'Each arena added a layer: startup shipped, freelance scoped, ADZZ scaled.',
     questions: [
       {
@@ -119,7 +119,7 @@ export const chapters: Chapter[] = [
         id: 'c2q2',
         timecode: '12:30',
         kind: 'FREELANCE',
-        q: 'You\u2019ve freelanced from 2016 to today: life coaches, tax doctors, AI day traders. The r\u00e9sum\u00e9 mentions Core Web Vitals rescues and a Yahoo Finance stock-data aggregator feeding a custom-trained day-trading model. What did freelance teach you that employment never could?',
+        q: 'You\u2019ve freelanced since 2016: life coaches, tax doctors, AI day traders. The r\u00e9sum\u00e9 mentions Core Web Vitals rescues and a Yahoo Finance stock-data aggregator feeding a custom-trained day-trading model. What did freelance teach you that employment never could?',
         a: [
           'That performance is a business metric, not a vanity metric. When a client\u2019s revenue moves because you fixed their Core Web Vitals, you stop thinking of milliseconds as engineering taste and start thinking of them as money.',
           'Freelance is also the best scoping education that exists. A client walks in with a business problem and walks out with a technical spec, and you\u2019re the translation layer in between. Life coaches, tax doctors, day traders: every client type taught me a different way people think about value.',
@@ -189,7 +189,7 @@ export const chapters: Chapter[] = [
           'The \u201chow do I feed my codebase to a model\u201d problem. Every AI workflow starts with context, and getting a real repository into a prompt is weirdly annoying: binary files, node_modules, giant lockfiles, size limits. llmate handles include/exclude patterns, branch checkout, and size caps so the context you hand an agent is the code that matters.',
           'Why a CLI on JSR? Because that\u2019s where developers already live, and because good plumbing should be boring to install and instant to run. Building ingestion tooling also changed how I structure my own projects: you start writing repos for two audiences, humans and models.',
         ],
-        stats: ['llmate v1.0.x on JSR', 'Repo \u2192 LLM context', 'CLI-first'],
+        stats: ['llmate v1.0.1 on JSR', 'Repo \u2192 LLM context', 'CLI-first'],
       },
       {
         id: 'c3q2',
@@ -315,22 +315,22 @@ export const projects: Project[] = [
     cmd: '> jsr add @arobida/llmate',
     name: 'llmate',
     desc: 'CLI that analyzes, summarizes, and ingests code repositories into clean context for LLMs and agents. Include/exclude patterns, branch checkout, size caps: the plumbing between your repo and the model.',
-    meta: ['TypeScript', 'JSR', 'v1.0.x'],
-    url: 'https://github.com/arobida',
+    meta: ['TypeScript', 'JSR', 'v1.0.1'],
+    url: 'https://github.com/arobida/llmate',
   },
   {
     cmd: '> swift-pass get github',
     name: 'swift-pass',
     desc: 'Terminal-native secrets manager backed by the macOS Keychain. Your credentials stay in Apple\u2019s vault; the CLI just hands them to your scripts. Local-first security with zero new attack surface.',
     meta: ['Swift', 'macOS Keychain', 'CLI'],
-    url: 'https://github.com/arobida',
+    url: 'https://github.com/arobida/swift-pass',
   },
   {
     cmd: '> data-smith init ./data',
     name: 'data-smith',
     desc: 'An exploration of file-based local data layers: your files as the database. Built with TanStack Start, React 19, and TypeScript to prove apps can be powerful without owning your data.',
     meta: ['TanStack Start', 'React 19', 'Local-first'],
-    url: 'https://github.com/arobida',
+    url: 'https://github.com/arobida/data-smith',
   },
 ];
 
