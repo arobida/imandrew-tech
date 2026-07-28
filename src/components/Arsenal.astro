@@ -26,13 +26,13 @@ import { projects } from '../data/episode';
 
 <style>
   .arsenal {
-    background: var(--ink);
-    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    background: var(--void);
+    border-top: 1px solid color-mix(in srgb, var(--dim) 25%, transparent);
     padding: 7rem 1.5rem 9rem;
   }
   .ar-head { max-width: 1100px; margin: 0 auto 4rem; }
   .ar-head h2 { font-size: clamp(2.6rem, 6.5vw, 5.5rem); margin-bottom: 1.4rem; }
-  .ar-sub { color: var(--sage); max-width: 520px; }
+  .ar-sub { color: var(--dim); max-width: 520px; }
 
   /* weighted trio + staggered tops: not three identical cards */
   .ar-grid {
@@ -50,16 +50,16 @@ import { projects } from '../data/episode';
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
+    border: 1px solid color-mix(in srgb, var(--dim) 35%, transparent);
     padding: 1.8rem 1.6rem;
     text-decoration: none;
-    color: var(--paper);
+    color: var(--phosphor);
     overflow: hidden;
     /* hover lift and sheen are GSAP-driven (animations.ts); only the border
        stays a CSS transition so it can't fight the inline transforms */
     transition: border-color 0.25s;
   }
-  .ar-card:hover { border-color: var(--lime); }
+  .ar-card:hover { border-color: var(--hazard); }
 
   /* sheen sweep: GSAP tweens --sheen-x from -110% to 110% on hover */
   .ar-card::after {
@@ -69,7 +69,7 @@ import { projects } from '../data/episode';
     background: linear-gradient(
       105deg,
       transparent 42%,
-      color-mix(in srgb, var(--lime) 13%, transparent) 50%,
+      color-mix(in srgb, var(--hazard) 13%, transparent) 50%,
       transparent 58%
     );
     transform: translateX(var(--sheen-x, -110%));
@@ -83,16 +83,16 @@ import { projects } from '../data/episode';
 
   /* featured cell carries the visual weight: tinted + blueprint texture */
   .ar-card.featured {
-    background: color-mix(in srgb, var(--lime) 5%, transparent);
-    border-color: color-mix(in srgb, var(--lime) 35%, transparent);
+    background: color-mix(in srgb, var(--hazard) 5%, transparent);
+    border-color: color-mix(in srgb, var(--hazard) 35%, transparent);
   }
   .ar-card.featured::before {
     content: '';
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(color-mix(in srgb, var(--lime) 7%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--lime) 7%, transparent) 1px, transparent 1px);
+      linear-gradient(color-mix(in srgb, var(--hazard) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--hazard) 7%, transparent) 1px, transparent 1px);
     background-size: 36px 36px;
     mask-image: linear-gradient(160deg, black 0%, transparent 55%);
     -webkit-mask-image: linear-gradient(160deg, black 0%, transparent 55%);
@@ -102,7 +102,7 @@ import { projects } from '../data/episode';
   .ar-card.featured h3 { font-size: 2.6rem; }
 
   .ar-cmd {
-    color: var(--lime);
+    color: var(--hazard);
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     margin-bottom: 1.6rem;
@@ -111,20 +111,20 @@ import { projects } from '../data/episode';
     text-overflow: ellipsis;
   }
   .ar-card h3 { font-size: 1.9rem; margin-bottom: 0.8rem; }
-  .ar-desc { color: var(--sage); font-size: 0.92rem; line-height: 1.7; flex: 1; }
+  .ar-desc { color: var(--dim); font-size: 0.92rem; line-height: 1.7; flex: 1; }
   .ar-meta {
     display: flex;
     flex-wrap: wrap;
     row-gap: 0.45rem;
-    color: var(--sage);
+    color: var(--dim);
     font-size: 0.66rem;
     letter-spacing: 0.1em;
     margin-top: 1.6rem;
-    border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--dim) 30%, transparent);
     padding-top: 1rem;
   }
   .ar-meta span + span {
-    border-left: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--dim) 35%, transparent);
     margin-left: 0.7rem;
     padding-left: 0.7rem;
   }

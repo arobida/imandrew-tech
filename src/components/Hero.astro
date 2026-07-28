@@ -63,8 +63,8 @@
   .hero-grid-bg {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(color-mix(in srgb, var(--sage) 9%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--sage) 9%, transparent) 1px, transparent 1px);
+      linear-gradient(color-mix(in srgb, var(--dim) 9%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--dim) 9%, transparent) 1px, transparent 1px);
     background-size: 72px 72px;
     mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent 75%);
     -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent 75%);
@@ -77,16 +77,16 @@
   }
   .kicker {
     display: flex; align-items: center; flex-wrap: wrap; gap: 0.7rem;
-    color: var(--sage); font-size: 0.72rem; letter-spacing: 0.12em;
+    color: var(--dim); font-size: 0.72rem; letter-spacing: 0.12em;
     margin-bottom: 1.8rem;
   }
   .k-sq {
     width: 9px; height: 9px;
-    background: var(--lime);
+    background: var(--hazard);
   }
   .k-sep {
     width: 1px; height: 0.9em;
-    background: color-mix(in srgb, var(--sage) 45%, transparent);
+    background: color-mix(in srgb, var(--dim) 45%, transparent);
   }
 
   .hero-title {
@@ -94,13 +94,14 @@
     margin-bottom: 1.6rem;
   }
   .hero-title .line { display: block; }
-  .hero-title .lime { color: var(--lime); }
-  .cursor { font-weight: 400; }
+  .hero-title .lime { color: var(--hazard); }
+  /* the one terminal-green element on the page: the CRT cursor */
+  .cursor { font-weight: 400; color: var(--term); text-shadow: 0 0 10px color-mix(in srgb, var(--term) 70%, transparent); }
 
   .hero-hook {
     max-width: 560px;
     font-size: clamp(1rem, 1.5vw, 1.15rem);
-    color: var(--sage);
+    color: var(--dim);
     line-height: 1.6;
     margin-bottom: 2.5rem;
   }
@@ -113,16 +114,16 @@
   }
 
   .board {
-    border: 1px solid color-mix(in srgb, var(--sage) 40%, transparent);
+    border: 1px solid color-mix(in srgb, var(--dim) 40%, transparent);
     font-size: clamp(0.66rem, 1.2vw, 0.78rem);
   }
   .board-row {
     display: grid;
     grid-template-columns: 96px 1fr;
-    border-bottom: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--dim) 25%, transparent);
     transition: background 0.2s;
   }
-  .board-row:not(.board-head):hover { background: color-mix(in srgb, var(--lime) 4%, transparent); }
+  .board-row:not(.board-head):hover { background: color-mix(in srgb, var(--hazard) 4%, transparent); }
   .board-row:last-child { border-bottom: none; }
   .board-row span, .board-row dt, .board-row dd {
     padding: 0.55rem 0.9rem;
@@ -132,23 +133,23 @@
     text-overflow: ellipsis;
   }
   .board-row dt {
-    color: var(--sage);
-    border-right: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    color: var(--dim);
+    border-right: 1px solid color-mix(in srgb, var(--dim) 25%, transparent);
   }
   .board-row dd { margin: 0; }
-  .board-head { background: var(--lime); }
-  .board-head span { color: var(--ink) !important; font-weight: 600; border-color: var(--ink) !important; }
+  .board-head { background: var(--hazard); }
+  .board-head span { color: var(--void) !important; font-weight: 600; border-color: var(--void) !important; }
 
   .host-brief p {
-    color: var(--paper);
+    color: var(--phosphor);
     font-size: 0.95rem;
     line-height: 1.65;
     margin-bottom: 1.5rem;
   }
-  .host-brief strong { color: var(--lime); font-weight: 600; }
+  .host-brief strong { color: var(--hazard); font-weight: 600; }
   .cta {
     display: inline-flex; align-items: center; gap: 0.8rem;
-    background: var(--lime); color: var(--ink);
+    background: var(--hazard); color: var(--void);
     font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
     padding: 0.9rem 1.5rem;
     text-decoration: none;

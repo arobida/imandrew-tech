@@ -82,10 +82,10 @@ const { chapter } = Astro.props;
   .chapter {
     position: relative;
     padding: 7rem 1.5rem 5rem;
-    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--dim) 25%, transparent);
     overflow: hidden;
   }
-  .chapter:nth-of-type(even) { background: var(--olive-deep); }
+  .chapter:nth-of-type(even) { background: var(--crt-hi); }
   .ch-watermark {
     position: absolute;
     top: 1.5rem;
@@ -95,7 +95,7 @@ const { chapter } = Astro.props;
     font-size: clamp(14rem, 30vw, 26rem);
     line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 1.5px color-mix(in srgb, var(--sage) 22%, transparent);
+    -webkit-text-stroke: 1.5px color-mix(in srgb, var(--dim) 22%, transparent);
     pointer-events: none;
     user-select: none;
   }
@@ -104,15 +104,15 @@ const { chapter } = Astro.props;
     max-width: 1100px;
     margin: 0 auto 3.5rem;
   }
-  .ch-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 1.2rem; }
+  .ch-tag { color: var(--hazard); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 1.2rem; }
   .ch-head h2 { font-size: clamp(2.4rem, 6vw, 5rem); margin-bottom: 1.8rem; }
   .ch-head h2 .line { display: block; }
   .ch-lead {
     max-width: 640px;
-    color: var(--sage);
+    color: var(--dim);
     font-size: 1.05rem;
     line-height: 1.7;
-    border-left: 2px solid var(--lime);
+    border-left: 2px solid var(--hazard);
     padding-left: 1.4rem;
   }
 
@@ -134,8 +134,8 @@ const { chapter } = Astro.props;
     align-items: start;
     text-align: left;
     background: transparent;
-    color: var(--paper);
-    border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
+    color: var(--phosphor);
+    border: 1px solid color-mix(in srgb, var(--dim) 35%, transparent);
     padding: 1.4rem 1.6rem;
     cursor: pointer;
     font-family: var(--body);
@@ -148,64 +148,64 @@ const { chapter } = Astro.props;
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--lime);
+    background: var(--hazard);
     opacity: 0.07;
     clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
     transition: clip-path 0.35s var(--ease-pop);
     pointer-events: none;
   }
   .q-card:hover::before { clip-path: polygon(0 0%, 100% -12%, 100% 100%, 0 100%); }
-  .q-card:hover { border-color: var(--lime); }
+  .q-card:hover { border-color: var(--hazard); }
 
   .q-num {
     color: transparent;
-    -webkit-text-stroke: 1px color-mix(in srgb, var(--sage) 70%, transparent);
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--dim) 70%, transparent);
     font-size: 1.6rem;
     font-weight: 600;
     line-height: 1.1;
     transition: color 0.25s, -webkit-text-stroke-color 0.25s;
   }
   .q-card:hover .q-num, .q-item.asked .q-num {
-    color: var(--lime);
-    -webkit-text-stroke-color: var(--lime);
+    color: var(--hazard);
+    -webkit-text-stroke-color: var(--hazard);
   }
   .q-kind {
     display: inline-block;
-    color: var(--ink); background: var(--sage);
+    color: var(--void); background: var(--dim);
     font-size: 0.58rem; font-weight: 600; letter-spacing: 0.12em;
     padding: 0.15rem 0.5rem;
     margin-bottom: 0.45rem;
   }
   .q-text { line-height: 1.55; display: block; }
   .q-state { font-size: 0.7rem; letter-spacing: 0.08em; white-space: nowrap; padding-top: 0.2rem; }
-  .state-ask { color: var(--lime); }
-  .state-done { color: var(--sage); display: none; }
-  .q-item.asked .q-card { border-color: color-mix(in srgb, var(--lime) 60%, transparent); }
+  .state-ask { color: var(--hazard); }
+  .state-done { color: var(--dim); display: none; }
+  .q-item.asked .q-card { border-color: color-mix(in srgb, var(--hazard) 60%, transparent); }
   .q-item.asked .state-ask { display: none; }
   /* inline-block so the GSAP slide-in transform can render on it */
-  .q-item.asked .state-done { display: inline-block; color: var(--lime); }
+  .q-item.asked .state-done { display: inline-block; color: var(--hazard); }
 
   /* Panels open/close via GSAP clip-path tweens; hidden attribute is the
      no-JS / reduced-motion fallback state. */
   .q-panel {
-    border: 1px solid color-mix(in srgb, var(--lime) 45%, transparent);
+    border: 1px solid color-mix(in srgb, var(--hazard) 45%, transparent);
     border-top: none;
-    background: var(--ink);
+    background: var(--void);
     padding: 1.8rem 1.6rem 1.6rem;
   }
   .mic {
     display: flex; align-items: center; gap: 0.6rem;
-    color: var(--lime); font-size: 0.68rem; letter-spacing: 0.14em;
+    color: var(--hazard); font-size: 0.68rem; letter-spacing: 0.14em;
     margin-bottom: 1.2rem;
   }
   .mic-mark {
     font-weight: 600;
-    background: var(--lime);
-    color: var(--ink);
+    background: var(--hazard);
+    color: var(--void);
     padding: 0.15rem 0.4rem;
   }
   .a-para {
-    color: var(--paper);
+    color: var(--phosphor);
     max-width: 68ch;
     margin-bottom: 1.1rem;
     line-height: 1.75;
@@ -216,17 +216,17 @@ const { chapter } = Astro.props;
     margin: 0.4rem 0 0.8rem;
   }
   .a-stats li {
-    color: var(--ink); background: var(--lime);
+    color: var(--void); background: var(--hazard);
     font-size: 0.66rem; font-weight: 600; letter-spacing: 0.08em;
     padding: 0.35rem 0.7rem;
   }
-  .followups { margin-top: 1.4rem; border-top: 1px dashed color-mix(in srgb, var(--sage) 40%, transparent); padding-top: 1.2rem; }
-  .fu-tag { color: var(--sage); font-size: 0.66rem; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
+  .followups { margin-top: 1.4rem; border-top: 1px dashed color-mix(in srgb, var(--dim) 40%, transparent); padding-top: 1.2rem; }
+  .fu-tag { color: var(--dim); font-size: 0.66rem; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
   .fu { margin-bottom: 0.7rem; }
   .fu-btn {
     background: none;
-    border: 1px solid color-mix(in srgb, var(--sage) 45%, transparent);
-    color: var(--sage);
+    border: 1px solid color-mix(in srgb, var(--dim) 45%, transparent);
+    color: var(--dim);
     font-size: 0.78rem;
     text-align: left;
     padding: 0.7rem 1rem;
@@ -235,15 +235,15 @@ const { chapter } = Astro.props;
     transition: color 0.2s, border-color 0.2s, background 0.2s;
     line-height: 1.5;
   }
-  .fu-btn:hover { color: var(--lime); border-color: var(--lime); background: color-mix(in srgb, var(--lime) 5%, transparent); }
+  .fu-btn:hover { color: var(--hazard); border-color: var(--hazard); background: color-mix(in srgb, var(--hazard) 5%, transparent); }
   .fu-panel { padding: 1rem 0.4rem 0.2rem; }
-  .fu-panel .a-para { color: var(--sage); font-size: 0.95rem; }
+  .fu-panel .a-para { color: var(--dim); font-size: 0.95rem; }
 
   .takeaway {
     max-width: 1100px;
     margin: 4.5rem auto 0;
-    background: var(--lime);
-    color: var(--ink);
+    background: var(--hazard);
+    color: var(--void);
     padding: 2.2rem 2.4rem;
   }
   .tw-label { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em; display: block; margin-bottom: 0.8rem; }
@@ -382,7 +382,7 @@ const { chapter } = Astro.props;
         position: fixed; top: 0; left: 0; z-index: 200;
         padding: 0.45rem 0.8rem;
         font-family: var(--mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
-        color: var(--ink); background: color-mix(in srgb, var(--lime) 85%, transparent);
+        color: var(--void); background: color-mix(in srgb, var(--hazard) 85%, transparent);
         backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
         pointer-events: none;
         white-space: nowrap;

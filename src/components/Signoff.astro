@@ -37,6 +37,7 @@ import { links } from '../data/episode';
 
     <footer class="so-foot mono">
       <span>FROM CRAYONS TO CODE</span>
+      <span class="barcode" aria-hidden="true"></span>
       <span>&copy; ANDREW ROBIDA &middot; HELPFUL, NOT ADDICTIVE</span>
     </footer>
   </div>
@@ -44,24 +45,24 @@ import { links } from '../data/episode';
 
 <style>
   .signoff {
-    background: var(--olive);
-    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    background: var(--crt);
+    border-top: 1px solid color-mix(in srgb, var(--dim) 25%, transparent);
     padding: 7rem 1.5rem 3rem;
   }
   .so-inner { max-width: 1100px; margin: 0 auto; }
 
-  .recap { display: flex; flex-direction: column; gap: 0; margin-bottom: 5rem; border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent); }
+  .recap { display: flex; flex-direction: column; gap: 0; margin-bottom: 5rem; border-top: 1px solid color-mix(in srgb, var(--dim) 30%, transparent); }
   .recap-row {
     display: grid;
     grid-template-columns: 80px 1fr;
     gap: 2rem;
     padding: 1.6rem 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--dim) 30%, transparent);
     align-items: baseline;
   }
-  .recap-num { color: var(--lime); font-size: 0.85rem; font-weight: 600; }
-  .recap-row p { color: var(--sage); max-width: 70ch; line-height: 1.7; }
-  .recap-row strong { color: var(--paper); font-weight: 600; }
+  .recap-num { color: var(--hazard); font-size: 0.85rem; font-weight: 600; }
+  .recap-row p { color: var(--dim); max-width: 70ch; line-height: 1.7; }
+  .recap-row strong { color: var(--phosphor); font-weight: 600; }
 
   .so-line {
     font-size: clamp(2.2rem, 6.5vw, 5.2rem);
@@ -70,8 +71,8 @@ import { links } from '../data/episode';
 
   .complete-note[hidden] { display: none; }
   .complete-note {
-    color: var(--ink);
-    background: var(--lime);
+    color: var(--void);
+    background: var(--hazard);
     display: inline-block;
     font-size: 0.72rem;
     font-weight: 600;
@@ -83,7 +84,7 @@ import { links } from '../data/episode';
   .so-links {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
+    border: 1px solid color-mix(in srgb, var(--dim) 35%, transparent);
     margin-bottom: 5rem;
   }
   .so-links a {
@@ -92,25 +93,37 @@ import { links } from '../data/episode';
     gap: 0.3rem;
     padding: 1.3rem 1.5rem;
     text-decoration: none;
-    border: 0 solid color-mix(in srgb, var(--sage) 25%, transparent);
+    border: 0 solid color-mix(in srgb, var(--dim) 25%, transparent);
     transition: background 0.2s;
   }
   .so-links a:nth-child(odd) { border-right-width: 1px; }
   .so-links a:nth-child(-n+2) { border-bottom-width: 1px; }
-  .so-links a:hover { background: color-mix(in srgb, var(--lime) 8%, transparent); }
-  .so-label { color: var(--lime); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; }
-  .so-note { color: var(--sage); font-size: 0.68rem; letter-spacing: 0.05em; }
+  .so-links a:hover { background: color-mix(in srgb, var(--hazard) 8%, transparent); }
+  .so-label { color: var(--hazard); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; }
+  .so-note { color: var(--dim); font-size: 0.68rem; letter-spacing: 0.05em; }
 
   .so-foot {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
-    color: var(--sage);
+    color: var(--dim);
     font-size: 0.64rem;
     letter-spacing: 0.12em;
-    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--dim) 25%, transparent);
     padding-top: 1.5rem;
+  }
+  /* fake barcode: layered repeating bars with offset periods */
+  .barcode {
+    width: 96px;
+    height: 22px;
+    background:
+      repeating-linear-gradient(90deg, var(--dim) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(90deg, var(--dim) 0 2px, transparent 2px 9px),
+      repeating-linear-gradient(90deg, var(--dim) 0 3px, transparent 3px 13px);
+    background-blend-mode: lighten;
+    opacity: 0.7;
   }
   @media (max-width: 760px) {
     .recap-row { grid-template-columns: 44px 1fr; gap: 1rem; }

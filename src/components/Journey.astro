@@ -15,7 +15,7 @@ import { journey } from '../data/episode';
         id="journey-path"
         d="M50,0 C20,150 80,300 50,450 C20,600 80,750 50,900 C20,1050 80,1200 50,1350 C20,1500 80,1650 50,1800 L50,2000"
         fill="none"
-        stroke="#d2ff00"
+        stroke="var(--hazard)"
         stroke-width="3"
         vector-effect="non-scaling-stroke"
       />
@@ -40,8 +40,8 @@ import { journey } from '../data/episode';
 
 <style>
   .journey {
-    background: var(--olive-deep);
-    border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
+    background: var(--crt-hi);
+    border-top: 1px solid color-mix(in srgb, var(--dim) 25%, transparent);
     padding: 7rem 1.5rem 6rem;
   }
   .journey-head {
@@ -49,7 +49,7 @@ import { journey } from '../data/episode';
     margin: 0 auto 5rem;
   }
   .journey-head h2 { font-size: clamp(2.6rem, 6.5vw, 5.5rem); margin-bottom: 1.4rem; }
-  .journey-sub { color: var(--sage); max-width: 480px; }
+  .journey-sub { color: var(--dim); max-width: 480px; }
 
   .track-wrap { position: relative; max-width: 1100px; margin: 0 auto; }
   .track-line {
@@ -80,12 +80,12 @@ import { journey } from '../data/episode';
   .cp-dot {
     display: block;
     width: 14px; height: 14px;
-    background: var(--olive-deep);
-    border: 2px solid var(--lime);
-    border-radius: 50%;
+    background: var(--crt-hi);
+    border: 2px solid var(--hazard);
+    /* 90-degree corners only: a square HUD reticle, not a dot */
     transition: background 0.3s, box-shadow 0.3s;
   }
-  .cp.in .cp-dot { background: var(--lime); box-shadow: 0 0 14px color-mix(in srgb, var(--lime) 60%, transparent); }
+  .cp.in .cp-dot { background: var(--hazard); box-shadow: 0 0 14px color-mix(in srgb, var(--hazard) 60%, transparent); }
   .cp-meta {
     display: flex;
     gap: 0.8rem;
@@ -93,14 +93,14 @@ import { journey } from '../data/episode';
     margin-bottom: 0.5rem;
   }
   .cp.left .cp-meta { justify-content: flex-end; }
-  .cp-year { color: var(--lime); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.06em; }
+  .cp-year { color: var(--hazard); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.06em; }
   .cp-tag {
-    color: var(--ink); background: var(--sage);
+    color: var(--void); background: var(--dim);
     font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em;
     padding: 0.15rem 0.5rem;
   }
   .cp h3 { font-size: clamp(1.4rem, 2.6vw, 2rem); margin-bottom: 0.6rem; }
-  .cp p { color: var(--sage); font-size: 0.95rem; }
+  .cp p { color: var(--dim); font-size: 0.95rem; }
 
   @media (max-width: 760px) {
     .track-line { left: 7px; width: calc(100% - 7px); }
