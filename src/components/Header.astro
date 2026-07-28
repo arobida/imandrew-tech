@@ -3,19 +3,29 @@ const total = 11;
 ---
 <header class="site-head" id="site-head">
   <a href="#top" class="brand mono">
-    <span class="brand-mark"></span>
+    <span class="brand-mark" aria-hidden="true"></span>
     <span>ANDREW ROBIDA</span>
   </a>
-  <nav class="head-nav mono">
-    <a href="#journey">&gt; STORY<sup>1</sup></a>
-    <a href="#chapters">&gt; ASK<sup>2</sup></a>
-    <a href="#arsenal">&gt; WORK<sup>3</sup></a>
-    <a href="#signoff">&gt; CONNECT<sup>4</sup></a>
+  <nav class="head-nav mono" aria-label="Sections">
+    <a href="#journey" aria-keyshortcuts="1" title="Press 1">&gt; STORY<sup>1</sup></a>
+    <a href="#chapters" aria-keyshortcuts="2" title="Press 2">&gt; ASK<sup>2</sup></a>
+    <a href="#arsenal" aria-keyshortcuts="3" title="Press 3">&gt; WORK<sup>3</sup></a>
+    <a href="#signoff" aria-keyshortcuts="4" title="Press 4">&gt; CONNECT<sup>4</sup></a>
   </nav>
-  <div class="progress-wrap mono" title="Prompts explored">
-    <span class="progress-label">EXPLORED</span>
-    <div class="progress-track"><div class="progress-fill" id="ep-progress"></div></div>
-    <span class="progress-count"><span id="asked-count">00</span>/{total}</span>
+  <div class="progress-wrap mono">
+    <span class="progress-label" id="progress-label">EXPLORED</span>
+    <div
+      class="progress-track"
+      role="progressbar"
+      aria-labelledby="progress-label"
+      aria-valuemin="0"
+      aria-valuemax={total}
+      aria-valuenow="0"
+      id="ep-progress-bar"
+    >
+      <div class="progress-fill" id="ep-progress"></div>
+    </div>
+    <span class="progress-count" aria-live="polite" aria-atomic="true"><span id="asked-count">00</span>/{total}</span>
   </div>
 </header>
 
@@ -70,6 +80,9 @@ const total = 11;
     transition: width 0.5s var(--ease-pop);
   }
   .progress-count { font-size: 0.7rem; color: var(--lime); min-width: 4.2ch; }
+  @media (max-width: 900px) {
+    .progress-label { display: none; }
+  }
   @media (max-width: 760px) {
     .head-nav { display: none; }
     .progress-wrap { margin-left: auto; }
@@ -79,12 +92,39 @@ const total = 11;
 <script>
   const head = document.getElementById('site-head');
   let lastY = window.scrollY;
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (head) {
-      if (y > lastY && y > 300) head.classList.add('hidden-head');
-      else head.classList.remove('hidden-head');
+  let ticking = false;
+
+  // Hide-on-scroll genuinely needs scroll direction, which IntersectionObserver
+  // cannot provide. Passive listener, gated behind rAF so it runs once per frame.
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      if (head) {
+        if (y > lastY && y > 300) head.classList.add('hidden-head');
+        else head.classList.remove('hidden-head');
+      }
+      lastY = y;
+      ticking = false;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // The superscript hints in the nav are real: 1-4 jump to sections.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const jumpMap: Record<string, string> = {
+    '1': '#journey',
+    '2': '#chapters',
+    '3': '#arsenal',
+    '4': '#signoff',
+  };
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+    const target = jumpMap[e.key];
+    if (target) {
+      document.querySelector(target)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
     }
-    lastY = y;
-  }, { passive: true });
+  });
 </script>

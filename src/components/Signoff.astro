@@ -3,20 +3,18 @@ import { links } from '../data/episode';
 ---
 <section class="signoff" id="signoff">
   <div class="so-inner">
-    <p class="mono so-tag rv">&#9619; THE SHORT VERSION</p>
-
     <div class="recap rv">
       <div class="recap-row">
         <span class="mono recap-num">01</span>
-        <p><strong>The foundation.</strong> Twelve years of Marine Corps logistics and recruiting weren&rsquo;t a detour from engineering &mdash; they were the training set.</p>
+        <p><strong>The foundation.</strong> Twelve years of Marine Corps logistics and recruiting weren&rsquo;t a detour from engineering. They were the training set.</p>
       </div>
       <div class="recap-row">
         <span class="mono recap-num">02</span>
-        <p><strong>The build years.</strong> Startup, freelance, and serverless-at-scale each teach a different layer &mdash; shipping, scoping, and discipline &mdash; and doing all three in public compounds.</p>
+        <p><strong>The build years.</strong> Startup, freelance, and serverless-at-scale each teach a different layer (shipping, scoping, discipline), and doing all three in public compounds.</p>
       </div>
       <div class="recap-row">
         <span class="mono recap-num">03</span>
-        <p><strong>The mission.</strong> AI doesn&rsquo;t need more engagement machines. It needs local-first tools that hand real capability to people who can&rsquo;t code &mdash; software that&rsquo;s helpful, not addictive.</p>
+        <p><strong>The mission.</strong> AI doesn&rsquo;t need more engagement machines. It needs local-first tools that hand real capability to people who can&rsquo;t code: software that&rsquo;s helpful, not addictive.</p>
       </div>
     </div>
 
@@ -25,10 +23,10 @@ import { links } from '../data/episode';
     </h2>
 
     <div class="complete-note mono" id="complete-note" hidden>
-      &#9619; FULL STORY UNCOVERED &mdash; 11/11 ANSWERED. NICELY DONE.
+      &#9619; FULL STORY UNCOVERED &middot; 11/11 ANSWERED. NICELY DONE.
     </div>
 
-    <nav class="so-links mono rv">
+    <nav class="so-links mono rv" aria-label="Elsewhere">
       {links.map((l) => (
         <a href={l.url} target="_blank" rel="noopener">
           <span class="so-label">&gt; {l.label}</span>
@@ -39,7 +37,7 @@ import { links } from '../data/episode';
 
     <footer class="so-foot mono">
       <span>FROM CRAYONS TO CODE</span>
-      <span>&copy; ANDREW ROBIDA &mdash; HELPFUL, NOT ADDICTIVE</span>
+      <span>&copy; ANDREW ROBIDA &middot; HELPFUL, NOT ADDICTIVE</span>
     </footer>
   </div>
 </section>
@@ -51,7 +49,6 @@ import { links } from '../data/episode';
     padding: 7rem 1.5rem 3rem;
   }
   .so-inner { max-width: 1100px; margin: 0 auto; }
-  .so-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 3rem; }
 
   .recap { display: flex; flex-direction: column; gap: 0; margin-bottom: 5rem; border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent); }
   .recap-row {

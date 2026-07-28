@@ -7,13 +7,15 @@ const { chapter } = Astro.props;
   <span class="ch-watermark" aria-hidden="true">{chapter.index}</span>
   <div class="ch-head">
     <p class="mono ch-tag rv">
-      &#9619; CHAPTER {chapter.index} &mdash; {chapter.timecode}
+      &#9619; CHAPTER {chapter.index} &middot; {chapter.timecode}
     </p>
-    <h2 class="split" data-split set:html={chapter.title.replace(' — ', '<br /><span class="lime">') + '</span>'} />
+    <h2 class="split" data-split>
+      <span class="line">{chapter.titleLines[0]}</span>
+      <span class="line lime">{chapter.titleLines[1]}</span>
+    </h2>
     <blockquote class="ch-lead rv">
       {chapter.leadIn}
     </blockquote>
-    <p class="mono cue rv">&#9619; ASK HIM YOURSELF &mdash; PICK A PROMPT</p>
   </div>
 
   <ol class="rundown">
@@ -50,7 +52,12 @@ const { chapter } = Astro.props;
               <p class="mono fu-tag">&#9619; DIG DEEPER</p>
               {q.followUps.map((fu, fui) => (
                 <div class="fu">
-                  <button class="fu-btn mono" data-fu={`${q.id}-fu${fui}`}>
+                  <button
+                    class="fu-btn mono"
+                    data-fu={`${q.id}-fu${fui}`}
+                    aria-expanded="false"
+                    aria-controls={`${q.id}-fu${fui}`}
+                  >
                     &gt; {fu.q}
                   </button>
                   <div class="fu-panel" id={`${q.id}-fu${fui}`} hidden>
@@ -66,7 +73,7 @@ const { chapter } = Astro.props;
   </ol>
 
   <div class="takeaway rv">
-    <span class="mono tw-label">THE POINT &mdash; {chapter.index}</span>
+    <span class="mono tw-label">THE POINT &middot; {chapter.index}</span>
     <p>{chapter.takeaway}</p>
   </div>
 </section>
@@ -99,6 +106,7 @@ const { chapter } = Astro.props;
   }
   .ch-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 1.2rem; }
   .ch-head h2 { font-size: clamp(2.4rem, 6vw, 5rem); margin-bottom: 1.8rem; }
+  .ch-head h2 .line { display: block; }
   .ch-lead {
     max-width: 640px;
     color: var(--sage);
@@ -106,9 +114,7 @@ const { chapter } = Astro.props;
     line-height: 1.7;
     border-left: 2px solid var(--lime);
     padding-left: 1.4rem;
-    margin-bottom: 2rem;
   }
-  .cue { color: var(--sage); font-size: 0.72rem; letter-spacing: 0.12em; }
 
   .rundown {
     position: relative;
@@ -263,6 +269,12 @@ const { chapter } = Astro.props;
     .q-num { font-size: 1.1rem; }
     .q-state { justify-self: start; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .q-panel, .takeaway.rv { clip-path: none; transition: none; }
+    .a-para { opacity: 1; transform: none; transition: none; }
+    .q-card::before { transition: none; }
+  }
 </style>
 
 <script>
@@ -270,11 +282,13 @@ const { chapter } = Astro.props;
   const totalQ = 11;
   const countEl = document.getElementById('asked-count');
   const fillEl = document.getElementById('ep-progress');
+  const barEl = document.getElementById('ep-progress-bar');
   const bump = (id: string) => {
     if (asked.has(id)) return;
     asked.add(id);
     if (countEl) countEl.textContent = String(asked.size).padStart(2, '0');
     if (fillEl) fillEl.style.width = `${(asked.size / totalQ) * 100}%`;
+    if (barEl) barEl.setAttribute('aria-valuenow', String(asked.size));
     if (asked.size === totalQ) {
       document.dispatchEvent(new CustomEvent('episode-complete'));
     }
@@ -301,12 +315,16 @@ const { chapter } = Astro.props;
       const panel = document.getElementById(btn.dataset.fu!)!;
       const opening = panel.hidden;
       panel.hidden = !opening;
+      btn.setAttribute('aria-expanded', String(opening));
       if (opening) requestAnimationFrame(() => panel.classList.add('play'));
     });
   });
 
-  // glass cursor label — lerped follow, shows on [data-cursor] hover
-  if (window.matchMedia('(pointer: fine)').matches && !document.getElementById('cursor-label')) {
+  // Cursor label: lerped follow, shows on [data-cursor] hover.
+  // Pointer-fine devices only; skipped entirely under reduced motion.
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (finePointer && !reduceMotion && !document.getElementById('cursor-label')) {
     const el = document.createElement('div');
     el.id = 'cursor-label';
     el.setAttribute('aria-hidden', 'true');
@@ -319,7 +337,6 @@ const { chapter } = Astro.props;
         font-family: var(--mono); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.14em;
         color: var(--ink); background: color-mix(in srgb, var(--lime) 85%, transparent);
         backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-        border-radius: 999px;
         pointer-events: none;
         opacity: 0; transform: translate(-50%, -50%) scale(0.8);
         transition: opacity 0.2s var(--ease-pop), transform 0.2s var(--ease-pop);

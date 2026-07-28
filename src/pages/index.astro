@@ -9,14 +9,25 @@ import Signoff from '../components/Signoff.astro';
 import { chapters } from '../data/episode';
 
 const transitions = [
-  'So by the end of 2017 you\u2019ve got a r\u00e9sum\u00e9 written in React \u2014 literally, my-react-resume is a real repo. But learning projects are one thing. Getting someone to pay you for code is a different game entirely\u2026',
-  'You said the freelance years were really about translating client problems into systems. Your current work is that same instinct, pointed at a much bigger target \u2014 because the biggest \u201cclient\u201d with the most incomprehensible problem right now is basically everyone, trying to figure out AI\u2026',
+  'So by the end of 2017 you\u2019ve got a r\u00e9sum\u00e9 written in React. Literally: my-react-resume is a real repo. But learning projects are one thing. Getting someone to pay you for code is a different game entirely\u2026',
+  'You said the freelance years were really about translating client problems into systems. Your current work is that same instinct, pointed at a much bigger target: the biggest \u201cclient\u201d with the most incomprehensible problem right now is basically everyone, trying to figure out AI\u2026',
 ];
 ---
-<Layout title="Andrew Robida — From Crayons to Code">
+<Layout title="Andrew Robida - From Crayons to Code">
   <Header />
   <main>
     <Hero />
+
+    <div class="ticker mono" aria-hidden="true">
+      <div class="ticker-track">
+        {Array(2).fill(0).map(() => (
+          <span>
+            USMC LOGISTICS &nbsp;&#9642;&nbsp; 60 CONTRACTS / $3M &nbsp;&#9642;&nbsp; GITHUB EST. 2016 &nbsp;&#9642;&nbsp; 200K+ SUBSCRIBER MIGRATION &nbsp;&#9642;&nbsp; 30+ DOMAINS SERVERLESS &nbsp;&#9642;&nbsp; LLMATE &nbsp;&#9642;&nbsp; SWIFT-PASS &nbsp;&#9642;&nbsp; DATA-SMITH &nbsp;&#9642;&nbsp; HELPFUL NOT ADDICTIVE &nbsp;&#9642;&nbsp;
+          </span>
+        ))}
+      </div>
+    </div>
+
     <Journey />
     <div id="chapters">
       {chapters.map((ch, i) => (
@@ -36,6 +47,19 @@ const transitions = [
 </Layout>
 
 <style>
+  .ticker {
+    border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    padding: 0.9rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--sage);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+  .ticker-track { display: inline-flex; animation: ticker 40s linear infinite; }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+
   .segue {
     max-width: 720px;
     margin: 0 auto;
@@ -56,6 +80,10 @@ const transitions = [
     line-height: 0.5;
     color: var(--lime);
     margin-bottom: 1.2rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
   }
 </style>
 

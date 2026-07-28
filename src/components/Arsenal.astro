@@ -3,21 +3,22 @@ import { projects } from '../data/episode';
 ---
 <section class="arsenal" id="arsenal">
   <div class="ar-head">
-    <p class="mono ar-tag rv">&#9619; CURRENT WORK &mdash; SHIPPING NOW</p>
     <h2 class="split" data-split>THE ARSENAL</h2>
     <p class="ar-sub rv">
-      Every claim above has a repo behind it. Pull any of them down and break something &mdash;
-      he builds in public, so he can take it.
+      Every claim above has a repo behind it. Pull any of them down and break something.
+      He builds in public, so he can take it.
     </p>
   </div>
 
   <div class="ar-grid">
-    {projects.map((p) => (
-      <a class="ar-card rv" href={p.url} target="_blank" rel="noopener">
-        <p class="ar-cmd mono">{p.cmd}<span class="blink">_</span></p>
+    {projects.map((p, i) => (
+      <a class={`ar-card rv ${i === 0 ? 'featured' : ''}`} data-offset={String(i % 3)} href={p.url} target="_blank" rel="noopener">
+        <p class="ar-cmd mono">{p.cmd}</p>
         <h3>{p.name}</h3>
         <p class="ar-desc">{p.desc}</p>
-        <p class="ar-meta mono">{p.meta}</p>
+        <p class="ar-meta mono">
+          {p.meta.map((m) => <span>{m}</span>)}
+        </p>
       </a>
     ))}
   </div>
@@ -27,33 +28,60 @@ import { projects } from '../data/episode';
   .arsenal {
     background: var(--ink);
     border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
-    padding: 7rem 1.5rem;
+    padding: 7rem 1.5rem 9rem;
   }
   .ar-head { max-width: 1100px; margin: 0 auto 4rem; }
-  .ar-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 1.2rem; }
   .ar-head h2 { font-size: clamp(2.6rem, 6.5vw, 5.5rem); margin-bottom: 1.4rem; }
   .ar-sub { color: var(--sage); max-width: 520px; }
 
+  /* weighted trio + staggered tops: not three identical cards */
   .ar-grid {
     max-width: 1100px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.35fr 1fr 1fr;
     gap: 1.2rem;
+    align-items: start;
   }
+  .ar-card:nth-child(2) { margin-top: 2.75rem; }
+  .ar-card:nth-child(3) { margin-top: 5.5rem; }
+
   .ar-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
     padding: 1.8rem 1.6rem;
     text-decoration: none;
     color: var(--paper);
+    overflow: hidden;
     transition: border-color 0.25s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .ar-card:hover {
     border-color: var(--lime);
     transform: translateY(-6px);
   }
+
+  /* featured cell carries the visual weight: tinted + blueprint texture */
+  .ar-card.featured {
+    background: color-mix(in srgb, var(--lime) 5%, transparent);
+    border-color: color-mix(in srgb, var(--lime) 35%, transparent);
+  }
+  .ar-card.featured::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--lime) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--lime) 7%, transparent) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: linear-gradient(160deg, black 0%, transparent 55%);
+    -webkit-mask-image: linear-gradient(160deg, black 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .ar-card.featured > * { position: relative; }
+  .ar-card.featured h3 { font-size: 2.6rem; }
+
   .ar-cmd {
     color: var(--lime);
     font-size: 0.72rem;
@@ -66,6 +94,9 @@ import { projects } from '../data/episode';
   .ar-card h3 { font-size: 1.9rem; margin-bottom: 0.8rem; }
   .ar-desc { color: var(--sage); font-size: 0.92rem; line-height: 1.7; flex: 1; }
   .ar-meta {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.45rem;
     color: var(--sage);
     font-size: 0.66rem;
     letter-spacing: 0.1em;
@@ -73,5 +104,16 @@ import { projects } from '../data/episode';
     border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
     padding-top: 1rem;
   }
-  @media (max-width: 900px) { .ar-grid { grid-template-columns: 1fr; } }
+  .ar-meta span + span {
+    border-left: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
+    margin-left: 0.7rem;
+    padding-left: 0.7rem;
+  }
+
+  @media (max-width: 900px) {
+    .arsenal { padding-bottom: 7rem; }
+    .ar-grid { grid-template-columns: 1fr; }
+    .ar-card:nth-child(2), .ar-card:nth-child(3) { margin-top: 0; }
+    .ar-card.featured h3 { font-size: 2.1rem; }
+  }
 </style>
