@@ -4,44 +4,50 @@
   <div class="hero-grid-bg" aria-hidden="true"></div>
 
   <div class="hero-inner">
-    <p class="kicker mono rv">
-      <span class="rec"></span> PRODUCT ENGINEER &mdash; MARINE CORPS VETERAN &mdash; INDEPENDENT AI TOOL BUILDER
-    </p>
-
-    <h1 class="hero-title split" data-split>
-      <span class="line">FROM CRAYONS</span>
-      <span class="line lime">TO CODE<span class="cursor blink">_</span></span>
-    </h1>
-
-    <p class="hero-hook rv">
-      Marine Corps logistics, Navy recruiting pipelines, and on-device AI have one thing in common:
-      Andrew Robida &mdash; twelve years spent translating complexity into systems people can actually use,
-      without a single computer science class.
-    </p>
-
-    <!-- departure-board dossier -->
-    <div class="board mono rv" role="table" aria-label="Dossier">
-      <div class="board-row board-head">
-        <span>DOSSIER</span><span>A. ROBIDA // EST. 1986</span>
-      </div>
-      <div class="board-row"><span>ROLE</span><span>PRODUCT ENGINEER &amp; SYSTEMS ARCHITECT</span></div>
-      <div class="board-row"><span>SERVICE</span><span>US MARINE CORPS &mdash; 12 YRS &mdash; LOGISTICS</span></div>
-      <div class="board-row"><span>STATUS</span><span class="lime">INDEPENDENT &mdash; AI / LOCAL-FIRST TOOLS</span></div>
-      <div class="board-row"><span>BANNER</span><span>&ldquo;HELPFUL, NOT ADDICTIVE&rdquo;</span></div>
-      <div class="board-row"><span>ROUTE</span><span>PARADE DECK &rarr; DEPLOYMENT PIPELINE</span></div>
-    </div>
-
-    <div class="host-brief rv">
-      <p class="mono brief-tag">&#9619; HOW THIS SITE WORKS</p>
-      <p>
-        This is an interview you conduct yourself. Below are <strong>eleven prompts</strong> &mdash;
-        the ones you&rsquo;d ask if you sat down with him. Pick any, in any order,
-        and Andrew answers in his own words.
+    <div class="hero-copy">
+      <p class="kicker mono rv">
+        <span class="rec"></span> PRODUCT ENGINEER &mdash; VETERAN &mdash; INDEPENDENT BUILDER
       </p>
-      <a href="#journey" class="cta mono">
-        START WITH THE STORY <span class="cta-arrow">&darr;</span>
-      </a>
+
+      <h1 class="hero-title split" data-split>
+        <span class="line">FROM CRAYONS</span>
+        <span class="line lime">TO CODE<span class="cursor blink">_</span></span>
+      </h1>
+
+      <p class="hero-hook rv">
+        Twelve years translating operational complexity into systems people can use &mdash;
+        from Marine Corps logistics to local-first AI.
+      </p>
+
+      <div class="host-brief rv">
+        <p>
+          Conduct the interview yourself. Choose any prompt and Andrew answers in his own words.
+        </p>
+        <div class="hero-actions">
+          <a href="#journey" class="cta mono">
+            START THE STORY <span class="cta-arrow">&darr;</span>
+          </a>
+          <a href="#arsenal" class="cta cta-secondary mono">VIEW THE WORK <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
     </div>
+
+    <figure class="hero-visual rv" data-offset="1">
+      <div class="hero-image-wrap">
+        <img
+          src="https://picsum.photos/seed/field-operations/1200/1500"
+          alt=""
+          width="1200"
+          height="1500"
+          fetchpriority="high"
+          decoding="sync"
+        />
+      </div>
+      <figcaption class="mono">
+        <span>SYSTEMS, TRANSLATED.</span>
+        <span>2004 &mdash; NOW</span>
+      </figcaption>
+    </figure>
   </div>
 
   <div class="hero-ticker mono" aria-hidden="true">
@@ -58,11 +64,11 @@
 <style>
   .hero {
     position: relative;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 7rem 1.5rem 0;
+    padding: 9rem 1.5rem 0;
     overflow: hidden;
   }
   .hero-grid-bg {
@@ -76,10 +82,15 @@
   }
   .hero-inner {
     position: relative;
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
     width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: center;
   }
+  .hero-copy { grid-column: span 7; padding-bottom: 7rem; }
   .kicker {
     display: flex; align-items: center; gap: 0.7rem;
     color: var(--sage); font-size: 0.72rem; letter-spacing: 0.12em;
@@ -93,7 +104,8 @@
   @keyframes recpulse { 50% { opacity: 0.25; } }
 
   .hero-title {
-    font-size: clamp(3.4rem, 11.5vw, 9.5rem);
+    max-width: 72rem;
+    font-size: clamp(3.25rem, 8.8vw, 8.6rem);
     margin-bottom: 2.2rem;
   }
   .hero-title .line { display: block; }
@@ -101,62 +113,72 @@
   .cursor { font-weight: 400; }
 
   .hero-hook {
-    max-width: 620px;
-    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    max-width: 52ch;
+    font-size: clamp(1.05rem, 1.5vw, 1.25rem);
     color: var(--sage);
     line-height: 1.65;
-    margin-bottom: 3rem;
+    margin-bottom: 2.3rem;
   }
-
-  .board {
-    max-width: 720px;
-    border: 1px solid color-mix(in srgb, var(--sage) 40%, transparent);
-    margin-bottom: 3rem;
-    font-size: clamp(0.68rem, 1.4vw, 0.8rem);
-  }
-  .board-row {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    border-bottom: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
-    transition: background 0.2s;
-  }
-  .board-row:not(.board-head):hover { background: color-mix(in srgb, var(--lime) 4%, transparent); }
-  .board-row:last-child { border-bottom: none; }
-  .board-row span {
-    padding: 0.65rem 1rem;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .board-row span:first-child {
-    color: var(--sage);
-    border-right: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
-  }
-  .board-head { background: var(--lime); }
-  .board-head span { color: var(--ink) !important; font-weight: 600; border-color: var(--ink) !important; }
 
   .host-brief {
-    max-width: 560px;
-    padding-bottom: 5rem;
+    max-width: 52ch;
   }
-  .brief-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.1em; margin-bottom: 0.8rem; }
   .host-brief p { color: var(--paper); margin-bottom: 1.6rem; }
-  .host-brief strong { color: var(--lime); font-weight: 600; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
   .cta {
     position: relative;
     display: inline-flex; align-items: center; gap: 0.8rem;
     background: var(--lime); color: var(--ink);
     font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
     padding: 0.9rem 1.6rem;
-    border-radius: 999px;
+    border: 1px solid var(--lime);
+    border-radius: 0.25rem;
     text-decoration: none;
     overflow: hidden;
     transition: transform 0.3s var(--ease-pop);
   }
   .cta:hover { transform: translateY(-3px); }
+  .cta:active { transform: translateY(0) scale(0.98); }
   .cta-arrow { transition: transform 0.3s var(--ease-pop); }
   .cta:hover .cta-arrow { transform: translateY(3px); }
+  .cta-secondary { background: transparent; color: var(--paper); border-color: color-mix(in srgb, var(--paper) 38%, transparent); }
+  .cta-secondary:hover { color: var(--lime); border-color: var(--lime); }
+
+  .hero-visual {
+    grid-column: span 5;
+    align-self: stretch;
+    min-height: 42rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 7rem;
+  }
+  .hero-image-wrap {
+    position: relative;
+    overflow: hidden;
+    min-height: 34rem;
+    border-radius: 0.35rem 5rem 0.35rem 0.35rem;
+    isolation: isolate;
+  }
+  .hero-image-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--olive-deep), transparent 60%), radial-gradient(circle at 70% 15%, transparent, color-mix(in srgb, var(--olive-deep) 55%, transparent));
+  }
+  .hero-image-wrap img {
+    width: 100%; height: 100%; position: absolute; inset: 0;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.25);
+    opacity: 0.88;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
+  }
+  .hero-visual:hover img { transform: scale(1.05); filter: grayscale(0.35) contrast(1.18); }
+  .hero-visual figcaption {
+    display: flex; justify-content: space-between; gap: 1rem;
+    color: var(--sage); font-size: 0.65rem; letter-spacing: 0.12em;
+    padding-top: 0.9rem;
+  }
 
   .hero-ticker {
     position: relative;
@@ -173,5 +195,20 @@
   @media (prefers-reduced-motion: reduce) {
     .ticker-track { animation: none; }
     .rec { animation: none; }
+  }
+  @media (max-width: 900px) {
+    .hero { padding-top: 8.5rem; }
+    .hero-inner { display: block; }
+    .hero-copy { padding-bottom: 4rem; }
+    .hero-visual { min-height: 0; padding-bottom: 5rem; }
+    .hero-image-wrap { min-height: 28rem; border-radius: 0.35rem 3rem 0.35rem 0.35rem; }
+  }
+  @media (max-width: 560px) {
+    .hero { padding-inline: 1rem; }
+    .kicker { align-items: flex-start; line-height: 1.6; }
+    .hero-title { font-size: clamp(2.8rem, 13.5vw, 5rem); }
+    .hero-actions { align-items: stretch; }
+    .cta { justify-content: center; width: 100%; }
+    .hero-image-wrap { min-height: 22rem; }
   }
 </style>

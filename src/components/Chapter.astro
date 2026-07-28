@@ -7,7 +7,7 @@ const { chapter } = Astro.props;
   <span class="ch-watermark" aria-hidden="true">{chapter.index}</span>
   <div class="ch-head">
     <p class="mono ch-tag rv">
-      &#9619; CHAPTER {chapter.index} &mdash; {chapter.timecode}
+      &#9619; {chapter.timecode} &mdash; FIELD NOTES
     </p>
     <h2 class="split" data-split set:html={chapter.title.replace(' — ', '<br /><span class="lime">') + '</span>'} />
     <blockquote class="ch-lead rv">
@@ -26,7 +26,6 @@ const { chapter } = Astro.props;
           aria-expanded="false"
           aria-controls={`${q.id}-panel`}
         >
-          <span class="q-num mono" aria-hidden="true">{chapter.index}.{qi + 1}</span>
           <span class="q-text">
             <span class="q-kind mono">{q.kind}</span>
             {q.q}
@@ -66,7 +65,7 @@ const { chapter } = Astro.props;
   </ol>
 
   <div class="takeaway rv">
-    <span class="mono tw-label">THE POINT &mdash; {chapter.index}</span>
+    <span class="mono tw-label">WHAT STAYS</span>
     <p>{chapter.takeaway}</p>
   </div>
 </section>
@@ -123,7 +122,7 @@ const { chapter } = Astro.props;
     position: relative;
     width: 100%;
     display: grid;
-    grid-template-columns: 90px 1fr auto;
+    grid-template-columns: 1fr auto;
     gap: 1.5rem;
     align-items: start;
     text-align: left;
@@ -151,18 +150,6 @@ const { chapter } = Astro.props;
   .q-card:hover::before { clip-path: polygon(0 0%, 100% -12%, 100% 100%, 0 100%); }
   .q-card:hover { border-color: var(--lime); }
 
-  .q-num {
-    color: transparent;
-    -webkit-text-stroke: 1px color-mix(in srgb, var(--sage) 70%, transparent);
-    font-size: 1.6rem;
-    font-weight: 600;
-    line-height: 1.1;
-    transition: color 0.25s, -webkit-text-stroke-color 0.25s;
-  }
-  .q-card:hover .q-num, .q-item.asked .q-num {
-    color: var(--lime);
-    -webkit-text-stroke-color: var(--lime);
-  }
   .q-kind {
     display: inline-block;
     color: var(--ink); background: var(--sage);
@@ -260,7 +247,6 @@ const { chapter } = Astro.props;
   @media (max-width: 760px) {
     .ch-watermark { font-size: 12rem; top: 0.5rem; right: -2rem; }
     .q-card { grid-template-columns: 1fr; gap: 0.8rem; }
-    .q-num { font-size: 1.1rem; }
     .q-state { justify-self: start; }
   }
 </style>

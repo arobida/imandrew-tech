@@ -15,7 +15,7 @@ const transitions = [
 ---
 <Layout title="Andrew Robida — From Crayons to Code">
   <Header />
-  <main>
+  <main id="content" tabindex="-1">
     <Hero />
     <Journey />
     <div id="chapters">
@@ -24,7 +24,7 @@ const transitions = [
           <Chapter chapter={ch} />
           {transitions[i] && (
             <aside class="segue rv">
-              <p class="segue-text">{transitions[i]}</p>
+              <p class="segue-text" data-scrub-text>{transitions[i]}</p>
             </aside>
           )}
         </>
@@ -60,6 +60,11 @@ const transitions = [
 </style>
 
 <script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
   // split headlines into animatable chars
   document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
     const walk = (node: ChildNode) => {
@@ -95,4 +100,54 @@ const transitions = [
     { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
   );
   document.querySelectorAll('.rv, .split, .cp').forEach((el) => io.observe(el));
+
+  const motion = gsap.matchMedia();
+  motion.add('(prefers-reduced-motion: no-preference)', () => {
+    document.querySelectorAll<HTMLElement>('[data-scrub-text]').forEach((el) => {
+      const words = (el.textContent ?? '').trim().split(/\s+/);
+      el.replaceChildren(...words.flatMap((word, index) => {
+        const span = document.createElement('span');
+        span.className = 'scrub-word';
+        span.textContent = word;
+        return index === words.length - 1 ? [span] : [span, document.createTextNode(' ')];
+      }));
+      gsap.fromTo(el.querySelectorAll('.scrub-word'),
+        { opacity: 0.1 },
+        {
+          opacity: 1,
+          stagger: 0.08,
+          ease: 'none',
+          scrollTrigger: { trigger: el, start: 'top 85%', end: 'bottom 45%', scrub: 0.8 },
+        }
+      );
+    });
+
+    const path = document.getElementById('journey-path') as unknown as SVGPathElement | null;
+    const track = document.querySelector<HTMLElement>('.track-wrap');
+    if (path && track) {
+      const length = path.getTotalLength();
+      gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: track, start: 'top 75%', end: 'bottom 35%', scrub: 0.7 },
+      });
+    }
+  });
+
+  motion.add('(min-width: 1001px) and (prefers-reduced-motion: no-preference)', () => {
+    const layout = document.querySelector<HTMLElement>('.journey-layout');
+    const title = document.querySelector<HTMLElement>('.journey-head');
+    if (layout && title) {
+      ScrollTrigger.create({
+        trigger: layout,
+        start: 'top 7rem',
+        end: 'bottom 78%',
+        pin: title,
+        pinSpacing: false,
+      });
+    }
+  });
+
+  document.fonts.ready.then(() => ScrollTrigger.refresh());
 </script>

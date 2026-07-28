@@ -5,20 +5,40 @@ import { links } from '../data/episode';
   <div class="so-inner">
     <p class="mono so-tag rv">&#9619; THE SHORT VERSION</p>
 
-    <div class="recap rv">
-      <div class="recap-row">
-        <span class="mono recap-num">01</span>
-        <p><strong>The foundation.</strong> Twelve years of Marine Corps logistics and recruiting weren&rsquo;t a detour from engineering &mdash; they were the training set.</p>
+    <div class="recap rv" aria-roledescription="carousel" aria-label="Three principles from Andrew's story">
+      <div class="recap-stage" aria-live="polite">
+        <article class="recap-row is-active" data-recap-slide>
+          <div class="recap-portraits" aria-hidden="true">
+            <img src="https://picsum.photos/seed/logistics-field/480/600" alt="" width="480" height="600" loading="lazy" />
+            <img src="https://picsum.photos/seed/operations-map/480/600" alt="" width="480" height="600" loading="lazy" />
+          </div>
+          <p><strong>The foundation.</strong> Twelve years of Marine Corps logistics and recruiting weren&rsquo;t a detour from engineering &mdash; they were the training set.</p>
+        </article>
+        <article class="recap-row" data-recap-slide hidden>
+          <div class="recap-portraits" aria-hidden="true">
+            <img src="https://picsum.photos/seed/code-workbench/480/600" alt="" width="480" height="600" loading="lazy" />
+            <img src="https://picsum.photos/seed/server-room/480/600" alt="" width="480" height="600" loading="lazy" />
+          </div>
+          <p><strong>The build years.</strong> Startup, freelance, and serverless-at-scale each teach a different layer &mdash; shipping, scoping, and discipline &mdash; and doing all three in public compounds.</p>
+        </article>
+        <article class="recap-row" data-recap-slide hidden>
+          <div class="recap-portraits" aria-hidden="true">
+            <img src="https://picsum.photos/seed/local-machine/480/600" alt="" width="480" height="600" loading="lazy" />
+            <img src="https://picsum.photos/seed/human-tools/480/600" alt="" width="480" height="600" loading="lazy" />
+          </div>
+          <p><strong>The mission.</strong> AI doesn&rsquo;t need more engagement machines. It needs local-first tools that hand real capability to people who can&rsquo;t code &mdash; software that&rsquo;s helpful, not addictive.</p>
+        </article>
       </div>
-      <div class="recap-row">
-        <span class="mono recap-num">02</span>
-        <p><strong>The build years.</strong> Startup, freelance, and serverless-at-scale each teach a different layer &mdash; shipping, scoping, and discipline &mdash; and doing all three in public compounds.</p>
-      </div>
-      <div class="recap-row">
-        <span class="mono recap-num">03</span>
-        <p><strong>The mission.</strong> AI doesn&rsquo;t need more engagement machines. It needs local-first tools that hand real capability to people who can&rsquo;t code &mdash; software that&rsquo;s helpful, not addictive.</p>
+      <div class="recap-controls mono">
+        <button type="button" data-recap-prev aria-label="Previous principle">&larr;</button>
+        <span data-recap-status>1 / 3</span>
+        <button type="button" data-recap-next aria-label="Next principle">&rarr;</button>
       </div>
     </div>
+
+    <p class="so-manifesto" data-scrub-text>
+      Software should finish its job, hand capability back to the person using it, and get out of the way.
+    </p>
 
     <h2 class="so-line split" data-split>
       KEEP BUILDING, WHATEVER<br />YOUR <span class="lime">STARTING LINE</span> LOOKED LIKE.
@@ -48,23 +68,55 @@ import { links } from '../data/episode';
   .signoff {
     background: var(--olive);
     border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
-    padding: 7rem 1.5rem 3rem;
+    padding: 10rem 1.5rem 3rem;
   }
-  .so-inner { max-width: 1100px; margin: 0 auto; }
+  .so-inner { max-width: 1400px; margin: 0 auto; }
   .so-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 3rem; }
 
-  .recap { display: flex; flex-direction: column; gap: 0; margin-bottom: 5rem; border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent); }
+  .recap { margin-bottom: 9rem; border-top: 1px solid color-mix(in srgb, var(--sage) 30%, transparent); }
+  .recap-stage { min-height: 24rem; }
   .recap-row {
     display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 2rem;
-    padding: 1.6rem 0;
+    grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1.25fr);
+    gap: clamp(3rem, 7vw, 8rem);
+    padding: 3rem 0;
     border-bottom: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
-    align-items: baseline;
+    align-items: center;
   }
-  .recap-num { color: var(--lime); font-size: 0.85rem; font-weight: 600; }
-  .recap-row p { color: var(--sage); max-width: 70ch; line-height: 1.7; }
+  .recap-portraits { position: relative; height: 18rem; width: min(100%, 22rem); }
+  .recap-portraits img {
+    position: absolute; width: 62%; height: 90%; object-fit: cover;
+    filter: grayscale(1) contrast(1.2); border-radius: 0.2rem;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
+  }
+  .recap-portraits img:first-child { left: 0; top: 0; transform: rotate(-3deg); }
+  .recap-portraits img:last-child { right: 0; bottom: 0; transform: rotate(4deg); }
+  .recap-row:hover .recap-portraits img:first-child { transform: translateX(-0.5rem) rotate(-5deg) scale(1.03); filter: grayscale(0.4) contrast(1.15); }
+  .recap-row:hover .recap-portraits img:last-child { transform: translateX(0.5rem) rotate(6deg) scale(1.03); filter: grayscale(0.4) contrast(1.15); }
+  .recap-row p { color: var(--sage); max-width: 30ch; font-size: clamp(1.45rem, 3vw, 2.6rem); line-height: 1.35; text-wrap: pretty; }
   .recap-row strong { color: var(--paper); font-weight: 600; }
+  .recap-controls { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; padding-top: 1.2rem; color: var(--sage); font-size: 0.72rem; }
+  .recap-controls button {
+    width: 2.8rem; height: 2.8rem; border: 1px solid color-mix(in srgb, var(--sage) 45%, transparent);
+    background: transparent; color: var(--paper); cursor: pointer; font: inherit;
+    transition: color 0.2s, background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .recap-controls button:hover { color: var(--ink); background: var(--lime); border-color: var(--lime); transform: translateY(-2px); }
+  .recap-controls button:active { transform: scale(0.96); }
+
+  .so-manifesto {
+    max-width: 32ch;
+    margin: 0 auto 9rem;
+    color: var(--paper);
+    font-family: var(--display);
+    font-size: clamp(2rem, 4.8vw, 4.5rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    text-align: center;
+    text-wrap: balance;
+  }
+  .so-manifesto .scrub-word { display: inline-block; }
 
   .so-line {
     font-size: clamp(2.2rem, 6.5vw, 5.2rem);
@@ -86,6 +138,7 @@ import { links } from '../data/episode';
   .so-links {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    grid-auto-flow: dense;
     border: 1px solid color-mix(in srgb, var(--sage) 35%, transparent);
     margin-bottom: 5rem;
   }
@@ -116,7 +169,12 @@ import { links } from '../data/episode';
     padding-top: 1.5rem;
   }
   @media (max-width: 760px) {
-    .recap-row { grid-template-columns: 44px 1fr; gap: 1rem; }
+    .signoff { padding-top: 7rem; }
+    .recap { margin-bottom: 7rem; }
+    .recap-row { grid-template-columns: 1fr; gap: 2.5rem; }
+    .recap-portraits { height: 15rem; }
+    .recap-row p { font-size: 1.4rem; }
+    .so-manifesto { margin-bottom: 7rem; text-align: left; }
     .so-links { grid-template-columns: 1fr; }
     .so-links a:nth-child(odd) { border-right-width: 0; }
     .so-links a:nth-child(-n+3) { border-bottom-width: 1px; }
@@ -124,6 +182,21 @@ import { links } from '../data/episode';
 </style>
 
 <script>
+  const recapSlides = [...document.querySelectorAll<HTMLElement>('[data-recap-slide]')];
+  const recapStatus = document.querySelector<HTMLElement>('[data-recap-status]');
+  let recapIndex = 0;
+  const showRecap = (next: number) => {
+    if (!recapSlides.length) return;
+    recapIndex = (next + recapSlides.length) % recapSlides.length;
+    recapSlides.forEach((slide, index) => {
+      slide.hidden = index !== recapIndex;
+      slide.classList.toggle('is-active', index === recapIndex);
+    });
+    if (recapStatus) recapStatus.textContent = `${recapIndex + 1} / ${recapSlides.length}`;
+  };
+  document.querySelector('[data-recap-prev]')?.addEventListener('click', () => showRecap(recapIndex - 1));
+  document.querySelector('[data-recap-next]')?.addEventListener('click', () => showRecap(recapIndex + 1));
+
   document.addEventListener('episode-complete', () => {
     const note = document.getElementById('complete-note');
     if (note) note.hidden = false;

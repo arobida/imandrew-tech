@@ -2,41 +2,43 @@
 import { journey } from '../data/episode';
 ---
 <section class="journey" id="journey">
-  <div class="journey-head">
-    <p class="mono sec-tag rv">&#9619; THE ROUTE IN &mdash; 2004 &rarr; NOW</p>
-    <h2 class="split" data-split>TWELVE YEARS TO<br /><span class="lime">FIRST COMMIT</span></h2>
-    <p class="journey-sub rv">
-      Twenty years, one through-line. Follow the wire &mdash;
-      it draws itself as you scroll, checkpoint by checkpoint.
-    </p>
-  </div>
+  <div class="journey-layout">
+    <div class="journey-head">
+      <p class="mono sec-tag rv">&#9619; THE ROUTE IN &mdash; 2004 &rarr; NOW</p>
+      <h2 class="split" data-split>TWELVE YEARS TO<br /><span class="lime">FIRST COMMIT</span></h2>
+      <p class="journey-sub rv">
+        Twenty years, one through-line. Follow the wire &mdash;
+        it draws itself as you scroll, checkpoint by checkpoint.
+      </p>
+    </div>
 
-  <div class="track-wrap">
-    <svg class="track-line" viewBox="0 0 100 2000" preserveAspectRatio="none" aria-hidden="true">
-      <path
-        id="journey-path"
-        d="M50,0 C20,150 80,300 50,450 C20,600 80,750 50,900 C20,1050 80,1200 50,1350 C20,1500 80,1650 50,1800 L50,2000"
-        fill="none"
-        stroke="#d2ff00"
-        stroke-width="3"
-        vector-effect="non-scaling-stroke"
-      />
-    </svg>
-    <ol class="track">
-      {journey.map((cp, i) => (
-        <li class={`cp ${i % 2 ? 'right' : 'left'} rv`}>
-          <div class="cp-node" aria-hidden="true"><span class="cp-dot"></span></div>
-          <div class="cp-card">
-            <div class="cp-meta mono">
-              <span class="cp-year">{cp.year}</span>
-              <span class="cp-tag">{cp.tag}</span>
+    <div class="track-wrap">
+      <svg class="track-line" viewBox="0 0 100 2000" preserveAspectRatio="none" aria-hidden="true">
+        <path
+          id="journey-path"
+          d="M50,0 C20,150 80,300 50,450 C20,600 80,750 50,900 C20,1050 80,1200 50,1350 C20,1500 80,1650 50,1800 L50,2000"
+          fill="none"
+          stroke="#d2ff00"
+          stroke-width="3"
+          vector-effect="non-scaling-stroke"
+        />
+      </svg>
+      <ol class="track">
+        {journey.map((cp, i) => (
+          <li class={`cp ${i % 2 ? 'right' : 'left'} rv`}>
+            <div class="cp-node" aria-hidden="true"><span class="cp-dot"></span></div>
+            <div class="cp-card">
+              <div class="cp-meta mono">
+                <span class="cp-year">{cp.year}</span>
+                <span class="cp-tag">{cp.tag}</span>
+              </div>
+              <h3>{cp.title}</h3>
+              <p>{cp.detail}</p>
             </div>
-            <h3>{cp.title}</h3>
-            <p>{cp.detail}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
+          </li>
+        ))}
+      </ol>
+    </div>
   </div>
 </section>
 
@@ -44,17 +46,24 @@ import { journey } from '../data/episode';
   .journey {
     background: var(--olive-deep);
     border-top: 1px solid color-mix(in srgb, var(--sage) 25%, transparent);
-    padding: 7rem 1.5rem 6rem;
+    padding: 9rem 1.5rem 10rem;
+  }
+  .journey-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.75fr) minmax(0, 1.25fr);
+    gap: clamp(4rem, 8vw, 9rem);
+    align-items: start;
   }
   .journey-head {
-    max-width: 1100px;
-    margin: 0 auto 5rem;
+    padding-top: 1rem;
   }
   .sec-tag { color: var(--lime); font-size: 0.72rem; letter-spacing: 0.12em; margin-bottom: 1.2rem; }
   .journey-head h2 { font-size: clamp(2.6rem, 6.5vw, 5.5rem); margin-bottom: 1.4rem; }
   .journey-sub { color: var(--sage); max-width: 480px; }
 
-  .track-wrap { position: relative; max-width: 1100px; margin: 0 auto; }
+  .track-wrap { position: relative; min-width: 0; }
   .track-line {
     position: absolute;
     top: 0; left: 0;
@@ -105,7 +114,10 @@ import { journey } from '../data/episode';
   .cp h3 { font-size: clamp(1.4rem, 2.6vw, 2rem); margin-bottom: 0.6rem; }
   .cp p { color: var(--sage); font-size: 0.95rem; }
 
-  @media (max-width: 760px) {
+  @media (max-width: 1000px) {
+    .journey { padding-block: 7rem; }
+    .journey-layout { display: block; }
+    .journey-head { margin-bottom: 5rem; }
     .track-line { left: 7px; width: calc(100% - 7px); }
     .cp, .cp.left, .cp.right {
       width: 100%;
@@ -117,22 +129,3 @@ import { journey } from '../data/episode';
     .cp.left .cp-meta { justify-content: flex-start; }
   }
 </style>
-
-<script>
-  const path = document.getElementById('journey-path') as unknown as SVGPathElement | null;
-  const wrap = document.querySelector('.track-wrap') as HTMLElement | null;
-  if (path && wrap) {
-    const len = path.getTotalLength();
-    path.style.strokeDasharray = `${len}`;
-    path.style.strokeDashoffset = `${len}`;
-    const draw = () => {
-      const r = wrap.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const progress = Math.min(1, Math.max(0, (vh * 0.75 - r.top) / r.height));
-      path.style.strokeDashoffset = `${len * (1 - progress)}`;
-    };
-    draw();
-    window.addEventListener('scroll', draw, { passive: true });
-    window.addEventListener('resize', draw);
-  }
-</script>
