@@ -88,39 +88,5 @@ const transitions = [
 </style>
 
 <script>
-  // split headlines into animatable chars
-  document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
-    const walk = (node: ChildNode) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const frag = document.createDocumentFragment();
-        for (const word of (node.textContent ?? '').split(/(\s+)/)) {
-          if (!word.trim()) { frag.appendChild(document.createTextNode(word)); continue; }
-          const w = document.createElement('span');
-          w.className = 'word';
-          for (const ch of word) {
-            const c = document.createElement('span');
-            c.className = 'char';
-            c.textContent = ch;
-            w.appendChild(c);
-          }
-          frag.appendChild(w);
-        }
-        node.replaceWith(frag);
-      } else if (node.nodeType === Node.ELEMENT_NODE && !(node as Element).classList.contains('word')) {
-        [...node.childNodes].forEach(walk);
-      }
-    };
-    [...el.childNodes].forEach(walk);
-    // stagger
-    el.querySelectorAll('.char').forEach((c, i) => {
-      (c as HTMLElement).style.transitionDelay = `${Math.min(i * 18, 600)}ms`;
-    });
-  });
-
-  // intersection reveals
-  const io = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('in')),
-    { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
-  );
-  document.querySelectorAll('.rv, .split, .cp').forEach((el) => io.observe(el));
+  import '../scripts/animations';
 </script>

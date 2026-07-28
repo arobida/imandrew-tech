@@ -184,15 +184,14 @@ const { chapter } = Astro.props;
   .q-item.asked .state-ask { display: none; }
   .q-item.asked .state-done { display: inline; color: var(--lime); }
 
+  /* Panels open/close via GSAP clip-path tweens; hidden attribute is the
+     no-JS / reduced-motion fallback state. */
   .q-panel {
     border: 1px solid color-mix(in srgb, var(--lime) 45%, transparent);
     border-top: none;
     background: var(--ink);
     padding: 1.8rem 1.6rem 1.6rem;
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-    transition: clip-path 0.45s var(--ease-pop);
   }
-  .q-panel.play { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
   .mic {
     display: flex; align-items: center; gap: 0.6rem;
     color: var(--lime); font-size: 0.68rem; letter-spacing: 0.14em;
@@ -209,12 +208,7 @@ const { chapter } = Astro.props;
     max-width: 68ch;
     margin-bottom: 1.1rem;
     line-height: 1.75;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.5s var(--ease-pop), transform 0.5s var(--ease-pop);
   }
-  .q-panel.play .a-para, .fu-panel.play .a-para { opacity: 1; transform: none; }
-  .q-panel.play .a-para:nth-of-type(2) { transition-delay: 0.3s; }
   .a-stats {
     list-style: none;
     display: flex; flex-wrap: wrap; gap: 0.6rem;
@@ -251,8 +245,6 @@ const { chapter } = Astro.props;
     color: var(--ink);
     padding: 2.2rem 2.4rem;
   }
-  .takeaway.rv { clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%); }
-  .takeaway.rv.in { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transition: opacity 0.65s var(--ease-pop), transform 0.65s var(--ease-pop), filter 0.65s var(--ease-pop), clip-path 0.7s var(--ease-pop) 0.1s; }
   .tw-label { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.16em; display: block; margin-bottom: 0.8rem; }
   .takeaway p {
     font-family: var(--display);
@@ -271,13 +263,13 @@ const { chapter } = Astro.props;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .q-panel, .takeaway.rv { clip-path: none; transition: none; }
-    .a-para { opacity: 1; transform: none; transition: none; }
     .q-card::before { transition: none; }
   }
 </style>
 
 <script>
+  import { gsap } from 'gsap';
+
   const asked = new Set<string>();
   const totalQ = 11;
   const countEl = document.getElementById('asked-count');
@@ -294,18 +286,45 @@ const { chapter } = Astro.props;
     }
   };
 
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const CLIP_CLOSED = 'polygon(0 0, 100% 0, 100% 0, 0 0)';
+  const CLIP_OPEN = 'polygon(0 0, 100% 0, 100% 100%, 0 100%)';
+
   document.querySelectorAll<HTMLButtonElement>('.q-card').forEach((btn) => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.qid!;
       const panel = document.getElementById(`${id}-panel`)!;
       const item = btn.closest('.q-item')!;
-      const opening = panel.hidden;
-      panel.hidden = !opening;
-      btn.setAttribute('aria-expanded', String(opening));
-      if (opening) {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      if (isOpen) {
+        btn.setAttribute('aria-expanded', 'false');
+        if (reduceMotion) {
+          panel.hidden = true;
+        } else {
+          gsap.to(panel, {
+            clipPath: CLIP_CLOSED,
+            duration: 0.35,
+            ease: 'power3.inOut',
+            overwrite: 'auto',
+            onComplete: () => { panel.hidden = true; },
+          });
+        }
+      } else {
+        btn.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
         item.classList.add('asked');
         bump(id);
-        requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('play')));
+        if (!reduceMotion) {
+          gsap.fromTo(panel,
+            { clipPath: CLIP_CLOSED },
+            { clipPath: CLIP_OPEN, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+          gsap.fromTo(panel.querySelectorAll('.a-para, .a-stats, .followups'),
+            { y: 12, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.45, stagger: 0.07, delay: 0.12, overwrite: 'auto', clearProps: 'all' });
+        }
       }
     });
   });
@@ -313,17 +332,24 @@ const { chapter } = Astro.props;
   document.querySelectorAll<HTMLButtonElement>('.fu-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const panel = document.getElementById(btn.dataset.fu!)!;
-      const opening = panel.hidden;
-      panel.hidden = !opening;
-      btn.setAttribute('aria-expanded', String(opening));
-      if (opening) requestAnimationFrame(() => panel.classList.add('play'));
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      if (isOpen) {
+        panel.hidden = true;
+        return;
+      }
+      panel.hidden = false;
+      if (!reduceMotion) {
+        gsap.fromTo(panel.querySelector('.a-para'),
+          { y: 10, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.4, clearProps: 'all' });
+      }
     });
   });
 
-  // Cursor label: lerped follow, shows on [data-cursor] hover.
+  // Cursor label: quickTo-driven follow (reuses one tween per axis instead of a
+  // perpetual rAF lerp loop), shown on [data-cursor] hover.
   // Pointer-fine devices only; skipped entirely under reduced motion.
-  const finePointer = window.matchMedia('(pointer: fine)').matches;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (finePointer && !reduceMotion && !document.getElementById('cursor-label')) {
     const el = document.createElement('div');
     el.id = 'cursor-label';
@@ -338,27 +364,25 @@ const { chapter } = Astro.props;
         color: var(--ink); background: color-mix(in srgb, var(--lime) 85%, transparent);
         backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
         pointer-events: none;
-        opacity: 0; transform: translate(-50%, -50%) scale(0.8);
-        transition: opacity 0.2s var(--ease-pop), transform 0.2s var(--ease-pop);
         white-space: nowrap;
+        opacity: 0; visibility: hidden;
       }
-      #cursor-label.on { opacity: 1; transform: translate(-50%, -130%) scale(1); }
     `;
     document.head.appendChild(style);
 
-    let tx = 0, ty = 0, x = 0, y = 0;
-    window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
-    const loop = () => {
-      x += (tx - x) * 0.18;
-      y += (ty - y) * 0.18;
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-      requestAnimationFrame(loop);
-    };
-    loop();
+    gsap.set(el, { xPercent: -50, yPercent: -50, scale: 0.8 });
+    const xTo = gsap.quickTo(el, 'x', { duration: 0.3, ease: 'power3' });
+    const yTo = gsap.quickTo(el, 'y', { duration: 0.3, ease: 'power3' });
+    window.addEventListener('mousemove', (e) => { xTo(e.clientX); yTo(e.clientY); }, { passive: true });
+
     document.querySelectorAll<HTMLElement>('[data-cursor]').forEach((t) => {
-      t.addEventListener('mouseenter', () => { el.textContent = `${t.dataset.cursor} →`; el.classList.add('on'); });
-      t.addEventListener('mouseleave', () => { el.classList.remove('on'); });
+      t.addEventListener('mouseenter', () => {
+        el.textContent = `${t.dataset.cursor} →`;
+        gsap.to(el, { autoAlpha: 1, yPercent: -130, scale: 1, duration: 0.25, ease: 'power3.out', overwrite: 'auto' });
+      });
+      t.addEventListener('mouseleave', () => {
+        gsap.to(el, { autoAlpha: 0, yPercent: -50, scale: 0.8, duration: 0.2, overwrite: 'auto' });
+      });
     });
   }
 </script>
