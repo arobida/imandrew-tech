@@ -28,7 +28,7 @@ import { links } from '../data/episode';
 
     <nav class="so-links mono rv" aria-label="Elsewhere">
       {links.map((l) => (
-        <a href={l.url} target="_blank" rel="noopener">
+        <a href={l.url} target="_blank" rel="noopener" data-cursor="VISIT">
           <span class="so-label">&gt; {l.label}</span>
           <span class="so-note">{l.note}</span>
         </a>

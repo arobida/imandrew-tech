@@ -38,9 +38,8 @@
 
       <div class="host-brief rv" data-offset="1">
         <p>
-          This is an interview you conduct yourself. Below are <strong>eleven prompts</strong>,
-          the ones you&rsquo;d ask if you sat down with Andrew. Pick any, in any order,
-          and he answers in his own words.
+          <strong>Eleven questions.</strong> No host, no polish.
+          Open any prompt &mdash; Andrew answers straight.
         </p>
         <a href="#journey" class="cta mono">
           START WITH THE STORY <span class="cta-arrow" aria-hidden="true">&darr;</span>
@@ -153,12 +152,16 @@
     font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
     padding: 0.9rem 1.5rem;
     text-decoration: none;
-    transition: transform 0.2s var(--ease-pop);
+    /* hover motion is the GSAP magnetic pull in animations.ts; transforms
+       here would fight its inline styles, so the fallback lives below */
   }
-  .cta:hover { transform: translateY(-3px); }
-  .cta:active { transform: translateY(-1px) scale(0.98); }
   .cta-arrow { transition: transform 0.3s var(--ease-pop); }
   .cta:hover .cta-arrow { transform: translateY(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta { transition: transform 0.2s; }
+    .cta:hover { transform: translateY(-3px); }
+  }
 
   @media (max-width: 900px) {
     .hero { padding-top: 6.5rem; justify-content: flex-start; }

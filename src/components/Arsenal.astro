@@ -12,7 +12,7 @@ import { projects } from '../data/episode';
 
   <div class="ar-grid">
     {projects.map((p, i) => (
-      <a class={`ar-card rv ${i === 0 ? 'featured' : ''}`} data-offset={String(i % 3)} href={p.url} target="_blank" rel="noopener">
+      <a class={`ar-card rv ${i === 0 ? 'featured' : ''}`} data-offset={String(i % 3)} data-cursor="REPO" href={p.url} target="_blank" rel="noopener">
         <p class="ar-cmd mono">{p.cmd}</p>
         <h3>{p.name}</h3>
         <p class="ar-desc">{p.desc}</p>
@@ -55,11 +55,30 @@ import { projects } from '../data/episode';
     text-decoration: none;
     color: var(--paper);
     overflow: hidden;
-    transition: border-color 0.25s, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    /* hover lift and sheen are GSAP-driven (animations.ts); only the border
+       stays a CSS transition so it can't fight the inline transforms */
+    transition: border-color 0.25s;
   }
-  .ar-card:hover {
-    border-color: var(--lime);
-    transform: translateY(-6px);
+  .ar-card:hover { border-color: var(--lime); }
+
+  /* sheen sweep: GSAP tweens --sheen-x from -110% to 110% on hover */
+  .ar-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 42%,
+      color-mix(in srgb, var(--lime) 13%, transparent) 50%,
+      transparent 58%
+    );
+    transform: translateX(var(--sheen-x, -110%));
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ar-card { transition: border-color 0.25s, transform 0.25s; }
+    .ar-card:hover { transform: translateY(-6px); }
   }
 
   /* featured cell carries the visual weight: tinted + blueprint texture */

@@ -57,7 +57,9 @@ const transitions = [
     font-size: 0.72rem;
     letter-spacing: 0.1em;
   }
-  .ticker-track { display: inline-flex; animation: ticker 40s linear infinite; }
+  /* CSS keyframes are the no-JS fallback; GSAP takes over (and reacts to
+     scroll velocity) when src/scripts/animations.ts runs. */
+  .ticker-track { display: inline-flex; animation: ticker 40s linear infinite; will-change: transform; }
   @keyframes ticker { to { transform: translateX(-50%); } }
 
   .segue {

@@ -182,7 +182,8 @@ const { chapter } = Astro.props;
   .state-done { color: var(--sage); display: none; }
   .q-item.asked .q-card { border-color: color-mix(in srgb, var(--lime) 60%, transparent); }
   .q-item.asked .state-ask { display: none; }
-  .q-item.asked .state-done { display: inline; color: var(--lime); }
+  /* inline-block so the GSAP slide-in transform can render on it */
+  .q-item.asked .state-done { display: inline-block; color: var(--lime); }
 
   /* Panels open/close via GSAP clip-path tweens; hidden attribute is the
      no-JS / reduced-motion fallback state. */
@@ -278,8 +279,18 @@ const { chapter } = Astro.props;
   const bump = (id: string) => {
     if (asked.has(id)) return;
     asked.add(id);
-    if (countEl) countEl.textContent = String(asked.size).padStart(2, '0');
-    if (fillEl) fillEl.style.width = `${(asked.size / totalQ) * 100}%`;
+    if (countEl) {
+      countEl.textContent = String(asked.size).padStart(2, '0');
+      if (!reduceMotion) {
+        gsap.fromTo(countEl, { scale: 1.4 }, { scale: 1, duration: 0.45, ease: 'back.out(2.5)', overwrite: 'auto' });
+      }
+    }
+    if (fillEl) {
+      const width = `${(asked.size / totalQ) * 100}%`;
+      // no CSS transition on width: GSAP tweens it here, reduced motion swaps instantly
+      if (reduceMotion) fillEl.style.width = width;
+      else gsap.to(fillEl, { width, duration: 0.6, ease: 'expo.out', overwrite: 'auto' });
+    }
     if (barEl) barEl.setAttribute('aria-valuenow', String(asked.size));
     if (asked.size === totalQ) {
       document.dispatchEvent(new CustomEvent('episode-complete'));
@@ -315,9 +326,19 @@ const { chapter } = Astro.props;
       } else {
         btn.setAttribute('aria-expanded', 'true');
         panel.hidden = false;
+        const firstAsk = !item.classList.contains('asked');
         item.classList.add('asked');
         bump(id);
         if (!reduceMotion) {
+          // first open: slide "✓ ANSWERED" in instead of hard-cutting to it
+          if (firstAsk) {
+            const done = btn.querySelector('.state-done');
+            if (done) {
+              gsap.fromTo(done,
+                { y: 10, autoAlpha: 0 },
+                { y: 0, autoAlpha: 1, duration: 0.45, ease: 'back.out(2)', delay: 0.18, clearProps: 'all' });
+            }
+          }
           gsap.fromTo(panel,
             { clipPath: CLIP_CLOSED },
             { clipPath: CLIP_OPEN, duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
@@ -347,8 +368,8 @@ const { chapter } = Astro.props;
     });
   });
 
-  // Cursor label: quickTo-driven follow (reuses one tween per axis instead of a
-  // perpetual rAF lerp loop), shown on [data-cursor] hover.
+  // Cursor label: quickSetter keeps the label locked to the pointer while GSAP
+  // handles its enter/leave motion, shown on [data-cursor] hover.
   // Pointer-fine devices only; skipped entirely under reduced motion.
   if (finePointer && !reduceMotion && !document.getElementById('cursor-label')) {
     const el = document.createElement('div');
@@ -366,21 +387,24 @@ const { chapter } = Astro.props;
         pointer-events: none;
         white-space: nowrap;
         opacity: 0; visibility: hidden;
+        will-change: transform, opacity;
       }
     `;
     document.head.appendChild(style);
 
     gsap.set(el, { xPercent: -50, yPercent: -50, scale: 0.8 });
-    const xTo = gsap.quickTo(el, 'x', { duration: 0.3, ease: 'power3' });
-    const yTo = gsap.quickTo(el, 'y', { duration: 0.3, ease: 'power3' });
-    window.addEventListener('mousemove', (e) => { xTo(e.clientX); yTo(e.clientY); }, { passive: true });
+    const setX = gsap.quickSetter(el, 'x', 'px');
+    const setY = gsap.quickSetter(el, 'y', 'px');
+    window.addEventListener('pointermove', (e) => { setX(e.clientX); setY(e.clientY); }, { passive: true });
 
     document.querySelectorAll<HTMLElement>('[data-cursor]').forEach((t) => {
-      t.addEventListener('mouseenter', () => {
+      t.addEventListener('pointerenter', (e) => {
+        setX(e.clientX);
+        setY(e.clientY);
         el.textContent = `${t.dataset.cursor} →`;
         gsap.to(el, { autoAlpha: 1, yPercent: -130, scale: 1, duration: 0.25, ease: 'power3.out', overwrite: 'auto' });
       });
-      t.addEventListener('mouseleave', () => {
+      t.addEventListener('pointerleave', () => {
         gsap.to(el, { autoAlpha: 0, yPercent: -50, scale: 0.8, duration: 0.2, overwrite: 'auto' });
       });
     });
