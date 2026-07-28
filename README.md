@@ -4,7 +4,7 @@ An interactive personal site for Andrew Robida, built with Astro. The story is t
 
 ## Stack
 
-- Astro 5 (static output, zero-JS-by-default + vanilla component scripts)
+- Astro 7 (static output, zero-JS-by-default + vanilla component scripts)
 - No UI framework — hand-rolled components, CSS custom properties, IntersectionObserver reveals
 - Fonts: Oswald (display), IBM Plex Mono (labels), Inter (body)
 
